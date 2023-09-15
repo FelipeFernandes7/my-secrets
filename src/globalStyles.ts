@@ -18,4 +18,17 @@ body{
     }
   }
 }
+body::-webkit-scrollbar {
+width: 5px;
+}
+
+body::-webkit-scrollbar-track {
+background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+background-color: transparent;
+border-radius: 15px;
+border: none;
+}
 `;
