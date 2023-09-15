@@ -7,12 +7,18 @@ export function Header() {
     <HeaderContainer>
       <HeaderContent>
         <Profile>
-          <img src={profile.img} alt="ig.news" />
+          <a href="/">
+            <img src={profile.img} alt="ig.news" />
+          </a>
           <span>{profile.name}</span>
         </Profile>
         <Action>
           <button>
-            <MdOutlineFavoriteBorder size={24} color={"#fff"} cursor={"pointer"} />
+            <MdOutlineFavoriteBorder
+              size={24}
+              color={"#fff"}
+              cursor={"pointer"}
+            />
           </button>
           <button>
             <BiBell size={24} color={"#fff"} cursor={"pointer"} />
