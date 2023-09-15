@@ -21,11 +21,16 @@ export const Title = styled.div`
 `;
 
 export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 0.5rem;
   width: 100%;
   margin-top: 1.5rem;
   height: 100%;
   border-radius: 1.5rem;
+  transition: all linear 0.3s;
   background-color: rgb(15 23 42);
   p {
     margin-top: 0.5rem;
@@ -70,6 +75,19 @@ export const Section = styled.section`
   flex-direction: column;
   width: 100%;
   margin-top: 1.5rem;
+  a {
+    width: 30%;
+    margin-top: 1rem;
+    color: #ffff;
+    text-decoration: none;
+    background-color: rgb(2 6 23);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    transition: all linear 0.3s;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
 `;
 
 export const BtnContainer = styled.div`
@@ -87,5 +105,21 @@ export const BtnContainer = styled.div`
     background: transparent;
     border-radius: 1rem;
     cursor: pointer;
+  }
+`;
+
+export const Button = styled.button`
+  margin-top: 1.5rem;
+  width: 30%;
+  height: 2.5rem;
+  border: none;
+  border-radius: 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 400;
+  background-color: rgb(37 99 235);
+  margin-bottom: 0.5rem;
+  color: #ffff;
+  @media screen and (max-width: 768px) {
+    width: 100%;
   }
 `;

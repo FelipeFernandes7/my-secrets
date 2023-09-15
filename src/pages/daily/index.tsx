@@ -2,14 +2,18 @@ import { useState } from "react";
 import { Container } from "../../components/container";
 import {
   BtnContainer,
+  Button,
   DailyContainer,
   Form,
   FormContent,
   Section,
   Title,
 } from "./styles";
+import { Link } from "react-router-dom";
+import { dailyLinks } from "../../constants/daily";
 
 export function Daily() {
+  const [daily, setDaily] = useState("");
   const [feeling, setFeeling] = useState({
     happy: false,
     sad: false,
@@ -24,7 +28,11 @@ export function Daily() {
         <Form>
           <p>Faça do seu dia uma história!</p>
           <FormContent>
-            <textarea placeholder="Registre aqui o seu dia :)" />
+            <textarea
+              value={daily}
+              onChange={(e) => setDaily(e.target.value)}
+              placeholder="Registre aqui o seu dia :)"
+            />
           </FormContent>
           <Section>
             <p>Sentimento?</p>
@@ -62,6 +70,13 @@ export function Daily() {
               </button>
             </BtnContainer>
           </Section>
+          <Section>
+            <p>Está se sentindo cansado?, acesse ⬇ </p>
+            <Link to={dailyLinks.url} target="_blank">
+             8 Dicas para reduzir o cansaço no final do dia!
+            </Link>
+          </Section>
+          <Button type="button">Enviar</Button>
         </Form>
       </Container>
     </DailyContainer>
