@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const DailyContainer = styled.div`
+export const NoteContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -45,7 +45,28 @@ export const FormContent = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
+  input{
+    margin-top: 1.5rem;
+    background-color: rgb(2 6 23);
+    color: #fff;
+    border-radius: 1rem;
+    width: 100%;
+    height: 3rem;
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgb(2 6 23);
+    border: 1px solid rgb(30 41 59);
+    transition: height 0.3s ease;
+    font-family: "Montserrat";
+    overflow-y: hidden;
+    resize: none;
+    &::placeholder {
+      color: #f1f1f1;
+    }
+  
+  }
   textarea {
     margin-top: 1.5rem;
     background-color: rgb(2 6 23);
@@ -118,6 +139,7 @@ export const Button = styled.button`
   font-weight: 400;
   background-color: rgb(37 99 235);
   margin-bottom: 0.5rem;
+  cursor: pointer;
   color: #ffff;
   @media screen and (max-width: 768px) {
     width: 100%;

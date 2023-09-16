@@ -1,16 +1,34 @@
 import { format } from "date-fns";
-import { CardContainer, Section, Title } from "./styles";
 import { ptBR } from "date-fns/locale";
+import { BiSolidTrashAlt } from "react-icons/bi";
+import { CardContainer, DeleteContainer, Section, Title } from "./styles";
+import { useContext } from "react";
+import { NoteContext } from "../../context/NoteContext";
 
-export function Card() {
+interface CardProps {
+  id: string;
+  week: Date;
+  hours: Date;
+  title: string;
+}
+export function Card({ week, hours, title, id }: CardProps) {
+  const {handleDeleteNote} = useContext(NoteContext)
+  const styledIcon = {
+    cursor: "pointer",
+    color: "#fff",
+    fontSize: 24,
+  };
   return (
     <CardContainer>
+      <DeleteContainer onClick={() => handleDeleteNote(id)}>
+        <BiSolidTrashAlt style={styledIcon} />
+      </DeleteContainer>
       <Section>
-        <h1>{format(new Date(), "EEEE", { locale: ptBR })}</h1>
-        <span>{format(new Date(), "p", { locale: ptBR })}h</span>
+        <h1>{format(new Date(week), "EEEE", { locale: ptBR })}</h1>
+        <span>{format(new Date(hours), "p", { locale: ptBR })}h</span>
       </Section>
       <Title>
-        <h1>Minha Primeira viagem ao beto carrero</h1>
+        <h1>{title}</h1>
       </Title>
     </CardContainer>
   );

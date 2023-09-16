@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 
 export const CardContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -57,4 +58,12 @@ export const Title = styled.div`
       max-width: 350px;
     }
   }
+`;
+
+export const DeleteContainer = styled.div`
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
+  transition: all linear 0.3s;
 `;

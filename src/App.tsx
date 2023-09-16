@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Home } from "./pages/home";
 import { Layout } from "./components/layout";
-import { Daily } from "./pages/daily";
+import { Note } from "./pages/note";
 
 const router = createBrowserRouter([
   {
@@ -12,8 +12,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/daily",
-        element: <Daily />,
+        path: "/note",
+        element: <Note />,
       },
     ],
   },

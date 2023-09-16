@@ -1,24 +1,34 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card } from "../../components/card";
+import { NoteContext } from "../../context/NoteContext";
 import { Container } from "../../components/container";
+import { Card } from "../../components/card";
+
 import { AddBtn, HomeContainer } from "./styles";
+
 import { MdAdd } from "react-icons/md";
 
 export function Home() {
+  const { data } = useContext(NoteContext);
   const navigate = useNavigate();
-  function handleAddNewDaily() {
-    navigate("/daily");
+  function handleAddNewNote() {
+    navigate("/note");
   }
   return (
     <HomeContainer>
       <Container>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {data.length > 0 &&
+          data.map((note) => (
+            <Card
+              key={note.id}
+              week={note.created}
+              hours={note.created}
+              title={note.title}
+              id={note.id}
+            />
+          ))}
       </Container>
-      <AddBtn onClick={handleAddNewDaily}>
+      <AddBtn onClick={handleAddNewNote}>
         <MdAdd color="#fff" size={24} />
       </AddBtn>
     </HomeContainer>
