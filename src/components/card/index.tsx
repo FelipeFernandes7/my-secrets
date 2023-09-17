@@ -12,7 +12,7 @@ interface CardProps {
   title: string;
 }
 export function Card({ week, hours, title, id }: CardProps) {
-  const {handleDeleteNote} = useContext(NoteContext)
+  const { handleDeleteNote } = useContext(NoteContext);
   const styledIcon = {
     cursor: "pointer",
     color: "rgb(220 38 38)",

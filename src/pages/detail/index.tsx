@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Notes } from "../../context/NoteContext";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc} from "firebase/firestore";
 import { db } from "../../services";
 
 import { translation } from "../../constants/note";
@@ -21,6 +21,8 @@ import { ptBR } from "date-fns/locale";
 
 export function Detail() {
   const [note, setNote] = useState<Notes>();
+  const [annotation, setAnnotation] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -37,6 +39,7 @@ export function Detail() {
       if (!doc.data()) {
         navigate("/");
       }
+      setAnnotation(doc.data()?.note);
       setNote({
         id: doc.id,
         created: doc.data()?.created.toDate(),
@@ -53,16 +56,45 @@ export function Detail() {
   function capitalizeFirstLetter(value: string) {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
+
+  function handleScroll() {
+    setIsEditing((t) => !t);
+    const nextSection = document.getElementById("annotation");
+
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: "smooth" });
+    }
+  }
   function toGoBack() {
     navigate("/");
   }
+ 
+  // async function handleUpdateNote() {
+  //   try {
+  //     const docRef = doc(db, "notes");
+  //     await updateDoc(docRef, {
+  //       note: note?.note,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  const randomColor = getRandomColor();
   return (
     <DetailContainer>
       <ActionContainer>
         <button onClick={toGoBack}>
           <BiLeftArrowAlt />
         </button>
-        <button>
+        <button onClick={handleScroll}>
           <FaRegEdit />
         </button>
       </ActionContainer>
@@ -82,13 +114,17 @@ export function Detail() {
         </div>
       </NoteContainer>
       <NotePad>
-        <h1>{note?.note}</h1>
+        <h1 id="annotation" contentEditable={isEditing} >
+          {annotation}
+        </h1>
       </NotePad>
       <FeelingSection>
         <h1>
           Sentimento:
           {feelingNote?.map((key) => (
-            <span key={key}>{key}</span>
+            <span style={{ background: randomColor }} key={key}>
+              {key}
+            </span>
           ))}
         </h1>
       </FeelingSection>

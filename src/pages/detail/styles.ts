@@ -91,12 +91,12 @@ export const FeelingSection = styled.div`
   display: flex;
   justify-content: flex-start;
   h1 {
+    width: 100%;
     font-size: 0.95rem;
     font-weight: 700;
     white-space: pre-wrap;
-    gap: 0.5rem;
     span {
-      background: rgb(17 24 39);
+      margin-left: 0.5rem;
       border-radius: 0.5rem;
       padding: 4px;
       font-size: 0.95rem;
