@@ -1,5 +1,4 @@
 import { FormEvent, useState } from "react";
-import { Container } from "../../components/container";
 import {
   BtnContainer,
   Button,
@@ -86,7 +85,6 @@ export function Note() {
       <Title>
         <h1>Como foi seu dia hoje?</h1>
       </Title>
-      <Container>
         <Form onSubmit={handleAddNewNote}>
           <p>Faça uma anotação!</p>
           <FormContent>
@@ -187,7 +185,6 @@ export function Note() {
             Enviar
           </Button>
         </Form>
-      </Container>
     </NoteContainer>
   );
 }

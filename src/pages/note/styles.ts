@@ -6,6 +6,12 @@ export const NoteContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  @media screen and (max-width: 768px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 export const Title = styled.div`
   margin-top: 1.5rem;
@@ -32,6 +38,9 @@ export const Form = styled.form`
   border-radius: 1.5rem;
   transition: all linear 0.3s;
   background-color: rgb(15 23 42);
+  @media screen and (max-width: 768px) {
+    border-radius: 2rem 2rem 0 0;
+  }
   p {
     margin-top: 0.5rem;
     margin-left: 0.5rem;
@@ -47,7 +56,7 @@ export const FormContent = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  input{
+  input {
     margin-top: 1.5rem;
     background-color: rgb(2 6 23);
     color: #fff;
@@ -65,7 +74,6 @@ export const FormContent = styled.div`
     &::placeholder {
       color: #f1f1f1;
     }
-  
   }
   textarea {
     margin-top: 1.5rem;
@@ -118,7 +126,6 @@ export const BtnContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-
 `;
 
 export const Button = styled.button`
@@ -133,11 +140,10 @@ export const Button = styled.button`
   margin-bottom: 0.5rem;
   cursor: pointer;
   color: #ffff;
-  &:disabled{
+  &:disabled {
     opacity: 0.5;
   }
   @media screen and (max-width: 768px) {
     width: 100%;
   }
-
 `;
