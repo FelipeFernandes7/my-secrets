@@ -36,9 +36,15 @@ export function Note() {
       await addDoc(collection(db, "notes"), {
         title: title,
         feeling: {
-          sad: feeling.sad,
           happy: feeling.happy,
+          sad: feeling.sad,
+          anxious: feeling.anxious,
+          insecure: feeling.insecure,
           excited: feeling.excited,
+          afraid: feeling.afraid,
+          disciplined: feeling.disciplined,
+          focused: feeling.focused,
+          unshakable: feeling.unshakable,
         },
         note: note,
         created: new Date(),
@@ -82,7 +88,7 @@ export function Note() {
       </Title>
       <Container>
         <Form onSubmit={handleAddNewNote}>
-          <p>Faça do seu dia uma história!</p>
+          <p>Faça uma anotação!</p>
           <FormContent>
             <input
               type="text"

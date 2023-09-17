@@ -12,13 +12,19 @@ interface NoteContextType {
   handleDeleteNote: (id: string) => void;
 }
 
-type Notes = {
+export type Notes = {
   id: string;
   title: string;
   feeling: {
     happy: boolean;
     sad: boolean;
+    anxious: boolean;
+    insecure: boolean;
     excited: boolean;
+    afraid: boolean;
+    disciplined: boolean;
+    focused: boolean;
+    unshakable: boolean;
   };
   note: string;
   created: Date;
