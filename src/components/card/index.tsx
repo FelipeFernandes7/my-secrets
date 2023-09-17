@@ -15,9 +15,10 @@ export function Card({ week, hours, title, id }: CardProps) {
   const {handleDeleteNote} = useContext(NoteContext)
   const styledIcon = {
     cursor: "pointer",
-    color: "#fff",
+    color: "red",
     fontSize: 24,
   };
+
   return (
     <CardContainer>
       <DeleteContainer onClick={() => handleDeleteNote(id)}>

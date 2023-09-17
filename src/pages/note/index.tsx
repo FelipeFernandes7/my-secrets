@@ -14,6 +14,7 @@ import { noteLinks } from "../../constants/note";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../services";
 import toast from "react-hot-toast";
+import { Feeling } from "../../components/feeling";
 
 export function Note() {
   const [note, setNote] = useState("");
@@ -21,7 +22,13 @@ export function Note() {
   const [feeling, setFeeling] = useState({
     happy: false,
     sad: false,
+    anxious: false,
+    insecure: false,
     excited: false,
+    afraid: false,
+    disciplined: false,
+    focused: false,
+    unshakable: false,
   });
   async function handleAddNewNote(e: FormEvent) {
     e.preventDefault();
@@ -42,6 +49,12 @@ export function Note() {
         excited: false,
         happy: false,
         sad: false,
+        afraid: false,
+        anxious: false,
+        disciplined: false,
+        focused: false,
+        insecure: false,
+        unshakable: false,
       });
       toast.success("Nota adicionada com sucesso!", {
         position: "top-center",
@@ -86,37 +99,76 @@ export function Note() {
           <Section>
             <p>Sentimento?</p>
             <BtnContainer>
-              <button
-                onClick={() => setFeeling((t) => ({ ...t, happy: !t.happy }))}
-                style={{
-                  background: feeling.happy ? " rgb(37 99 235)" : "transparent",
-                }}
-                type="button"
-              >
-                Feliz
-              </button>
-              <button
-                onClick={() => setFeeling((t) => ({ ...t, sad: !t.sad }))}
-                style={{
-                  background: feeling.sad ? " rgb(37 99 235)" : "transparent",
-                }}
-                type="button"
-              >
-                Triste
-              </button>
-              <button
-                onClick={() =>
-                  setFeeling((t) => ({ ...t, excited: !t.excited }))
+              <Feeling
+                isFeelingEnabled={feeling.happy}
+                background="rgb(74 222 128)"
+                description="Feliz"
+                feelingState={() =>
+                  setFeeling((f) => ({ ...f, happy: !f.happy }))
                 }
-                style={{
-                  background: feeling.excited
-                    ? " rgb(37 99 235)"
-                    : "transparent",
-                }}
-                type="button"
-              >
-                Extasiado
-              </button>
+              />
+              <Feeling
+                isFeelingEnabled={feeling.sad}
+                background="rgb(220 38 38)"
+                description="Triste"
+                feelingState={() => setFeeling((f) => ({ ...f, sad: !f.sad }))}
+              />
+              <Feeling
+                isFeelingEnabled={feeling.excited}
+                background="rgb(34 197 94)"
+                description="Alegre"
+                feelingState={() =>
+                  setFeeling((f) => ({ ...f, excited: !f.excited }))
+                }
+              />
+              <Feeling
+                isFeelingEnabled={feeling.disciplined}
+                background=" rgb(37 99 235)"
+                description="Disciplinado"
+                feelingState={() =>
+                  setFeeling((f) => ({ ...f, disciplined: !f.disciplined }))
+                }
+              />
+              <Feeling
+                isFeelingEnabled={feeling.anxious}
+                background=" rgb(253 224 71)"
+                description="Ansioso"
+                feelingState={() =>
+                  setFeeling((f) => ({ ...f, anxious: !f.anxious }))
+                }
+              />
+              <Feeling
+                isFeelingEnabled={feeling.focused}
+                background=" rgb(79 70 229)"
+                description="Focado"
+                feelingState={() =>
+                  setFeeling((f) => ({ ...f, focused: !f.focused }))
+                }
+              />
+              <Feeling
+                isFeelingEnabled={feeling.insecure}
+                background=" rgb(245 158 11)"
+                description="Inseguro"
+                feelingState={() =>
+                  setFeeling((f) => ({ ...f, insecure: !f.insecure }))
+                }
+              />
+              <Feeling
+                isFeelingEnabled={feeling.unshakable}
+                background=" rgb(219 39 119)"
+                description="Inabalável"
+                feelingState={() =>
+                  setFeeling((f) => ({ ...f, unshakable: !f.unshakable }))
+                }
+              />
+              <Feeling
+                isFeelingEnabled={feeling.afraid}
+                background=" rgb(254 215 170)"
+                description="Medo"
+                feelingState={() =>
+                  setFeeling((f) => ({ ...f, afraid: !f.afraid }))
+                }
+              />
             </BtnContainer>
           </Section>
           <Section>
@@ -125,7 +177,9 @@ export function Note() {
               deixe uma estrela :) ⭐!
             </Link>
           </Section>
-          <Button type="submit">Enviar</Button>
+          <Button disabled={!note || !title ? true : false} type="submit">
+            Enviar
+          </Button>
         </Form>
       </Container>
     </NoteContainer>

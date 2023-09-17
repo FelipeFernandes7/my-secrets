@@ -116,17 +116,9 @@ export const BtnContainer = styled.div`
   margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
-  button {
-    width: 30%;
-    color: #fff;
-    font-size: 0.95rem;
-    height: 3rem;
-    border: 2px solid rgb(30 41 59);
-    background: transparent;
-    border-radius: 1rem;
-    cursor: pointer;
-  }
+
 `;
 
 export const Button = styled.button`
@@ -141,7 +133,11 @@ export const Button = styled.button`
   margin-bottom: 0.5rem;
   cursor: pointer;
   color: #ffff;
+  &:disabled{
+    opacity: 0.5;
+  }
   @media screen and (max-width: 768px) {
     width: 100%;
   }
+
 `;

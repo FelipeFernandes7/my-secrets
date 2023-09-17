@@ -11,6 +11,9 @@ export const HomeContainer = styled.div`
 
 export const AddBtn = styled.button`
   position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   bottom: 2rem;
   background-color: rgb(37 99 235);
   border: none;

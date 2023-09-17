@@ -37,6 +37,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
         color: "#fff",
       },
     });
+    fetchDocs();
   }
 
   async function fetchDocs() {
