@@ -86,7 +86,10 @@ export function Detail() {
       </NotePad>
       <FeelingSection>
         <h1>
-          Sentimento: <span>{feelingNote}</span>
+          Sentimento:
+          {feelingNote?.map((key) => (
+            <span key={key}>{key}</span>
+          ))}
         </h1>
       </FeelingSection>
     </DetailContainer>
