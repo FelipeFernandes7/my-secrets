@@ -31,6 +31,7 @@ export function Detail() {
     note,
     setNote,
     setTitle,
+    setIsEditing,
     setAnnotation,
     handleUpdateActive,
     handleUpdateNote,
@@ -49,6 +50,7 @@ export function Detail() {
       .map((key) => translation[key as keyof typeof translation]);
 
   function toGoBack() {
+    setIsEditing(false);
     navigate("/");
   }
   function loadNote() {
@@ -125,9 +127,7 @@ export function Detail() {
         </h1>
       </FeelingSection>
       {isEditing && (
-        <Warning>
-          Agora você poderá atualizar o título e a anotação!
-        </Warning>
+        <Warning>Agora você poderá atualizar o título e a anotação!</Warning>
       )}
     </DetailContainer>
   );

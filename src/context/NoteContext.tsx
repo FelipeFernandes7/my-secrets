@@ -31,6 +31,7 @@ interface NoteContextType {
   isEditing: boolean;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
   annotation: string | undefined;
+  setIsEditing: Dispatch<SetStateAction<boolean>>
   setNote: Dispatch<SetStateAction<Notes | undefined>>;
   setTitle: Dispatch<SetStateAction<string>>
   setAnnotation: Dispatch<SetStateAction<string>>;
@@ -162,6 +163,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
         handleTextareaChange,
         handleUpdateNote,
         handleUpdateActive,
+        setIsEditing,
         setTitle,
         fetchDocs,
         setAnnotation,

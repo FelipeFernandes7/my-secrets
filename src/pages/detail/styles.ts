@@ -1,6 +1,8 @@
 import { styled } from "styled-components";
 
 export const DetailContainer = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,13 +70,13 @@ export const NoteContainer = styled.div`
 
 export const NotePad = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
   textarea {
     background: transparent;
-    height: 100%;
+    min-height: 100% !important;
     width: 100%;
     resize: none;
     border: none;
