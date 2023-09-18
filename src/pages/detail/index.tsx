@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Notes } from "../../context/NoteContext";
-import { doc, getDoc} from "firebase/firestore";
-import { db } from "../../services";
-
+import { NoteContext, Notes } from "../../context/NoteContext";
 import { translation } from "../../constants/note";
 import {
   ActionContainer,
@@ -18,13 +15,29 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import { FaRegEdit } from "react-icons/fa";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { capitalizeFirstLetter, getRandomColor } from "../../utils";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../services";
 
 export function Detail() {
-  const [note, setNote] = useState<Notes>();
-  const [annotation, setAnnotation] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const navigate = useNavigate();
   const { id } = useParams();
+  const {
+    textareaRef,
+    isEditing,
+    annotation,
+    note,
+    setNote,
+    setAnnotation,
+    handleUpdateActive,
+    handleUpdateNote,
+  } = useContext(NoteContext);
+  const navigate = useNavigate();
+
+  
+  const styledButtonEditing = {
+    background: isEditing ? "#fff" : "rgb(15 23 42)",
+    color: isEditing ? "rgb(15 23 42)" : "#fff",
+  };
 
   const feelingNote =
     note?.feeling &&
@@ -32,6 +45,9 @@ export function Detail() {
       .filter((key) => note?.feeling[key as keyof Notes["feeling"]] === true)
       .map((key) => translation[key as keyof typeof translation]);
 
+  function toGoBack() {
+    navigate("/");
+  }
   function loadNote() {
     if (!id) return;
     const docRef = doc(db, "notes", id);
@@ -53,40 +69,7 @@ export function Detail() {
   useEffect(() => {
     loadNote();
   }, []);
-  function capitalizeFirstLetter(value: string) {
-    return value.charAt(0).toUpperCase() + value.slice(1);
-  }
 
-  function handleScroll() {
-    setIsEditing((t) => !t);
-    const nextSection = document.getElementById("annotation");
-
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: "smooth" });
-    }
-  }
-  function toGoBack() {
-    navigate("/");
-  }
- 
-  // async function handleUpdateNote() {
-  //   try {
-  //     const docRef = doc(db, "notes");
-  //     await updateDoc(docRef, {
-  //       note: note?.note,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-  function getRandomColor() {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
   const randomColor = getRandomColor();
   return (
     <DetailContainer>
@@ -94,7 +77,7 @@ export function Detail() {
         <button onClick={toGoBack}>
           <BiLeftArrowAlt />
         </button>
-        <button onClick={handleScroll}>
+        <button style={styledButtonEditing} onClick={handleUpdateActive}>
           <FaRegEdit />
         </button>
       </ActionContainer>
@@ -114,9 +97,18 @@ export function Detail() {
         </div>
       </NoteContainer>
       <NotePad>
-        <h1 id="annotation" contentEditable={isEditing} >
-          {annotation}
-        </h1>
+        <textarea
+          ref={textareaRef}
+          disabled={!isEditing}
+          onChange={(e) => setAnnotation(e.target.value)}
+          id="annotation"
+          value={annotation}
+        />
+        {isEditing && (
+          <button onClick={() => handleUpdateNote(String(id))}>
+            Atualizar Registro
+          </button>
+        )}
       </NotePad>
       <FeelingSection>
         <h1>

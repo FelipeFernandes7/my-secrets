@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import {
   BtnContainer,
   Button,
@@ -14,6 +14,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../services";
 import toast from "react-hot-toast";
 import { Feeling } from "../../components/feeling";
+import { NoteContext } from "../../context/NoteContext";
 
 export function Note() {
   const navigate = useNavigate();
@@ -30,10 +31,12 @@ export function Note() {
     focused: false,
     unshakable: false,
   });
+  const { fetchDocs } = useContext(NoteContext);
+
   async function handleAddNewNote(e: FormEvent) {
     e.preventDefault();
     try {
-      await addDoc(collection(db, "notes"), {
+      await addDoc(collection(db, "notes"),{
         title: title,
         feeling: {
           happy: feeling.happy,
@@ -69,6 +72,7 @@ export function Note() {
           color: "#fff",
         },
       });
+      await fetchDocs();
       navigate("/");
     } catch (error) {
       console.log(error, "error");

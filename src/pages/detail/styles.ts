@@ -72,16 +72,42 @@ export const NoteContainer = styled.div`
 `;
 
 export const NotePad = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  h1 {
+  textarea {
+    background: transparent;
+    width: 100%;
+    resize: none;
+    border: none;
+    font-family: "Montserrat", sans-serif;
     font-size: 1rem;
     font-weight: 400;
     color: rgb(209 213 219);
     margin-top: 1.5rem;
+    outline: none;
     white-space: pre-wrap;
+  }
+  button {
+    margin-top: 1.5rem;
+    width: 30%;
+    height: 2.5rem;
+    border: none;
+    border-radius: 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    background-color: rgb(37 99 235);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    color: #ffff;
+    &:disabled {
+      opacity: 0.5;
+    }
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
   }
 `;
 
@@ -91,7 +117,10 @@ export const FeelingSection = styled.div`
   display: flex;
   justify-content: flex-start;
   h1 {
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
+    gap: 0.5rem;
     font-size: 0.95rem;
     font-weight: 700;
     white-space: pre-wrap;
