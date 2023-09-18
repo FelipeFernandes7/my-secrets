@@ -68,14 +68,13 @@ export const NoteContainer = styled.div`
 
 export const NotePad = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 50vh;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
   textarea {
     background: transparent;
-    height: 100vh;
+    height: 100%;
     width: 100%;
     resize: none;
     border: none;

@@ -6,7 +6,6 @@ export const StyledTextarea = styled.textarea`
   align-items: center;
   text-align: center;
   background: transparent;
-  margin-bottom: 1.5rem;
   width: 100%;
   resize: none;
   border: none;
