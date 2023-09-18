@@ -37,14 +37,9 @@ export const NoteContainer = styled.div`
   margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
-  width: 100%;
   align-items: center;
   justify-content: center;
-  h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    white-space: pre-wrap;
-  }
+
   div {
     display: flex;
     margin-top: 0.5rem;
@@ -73,12 +68,14 @@ export const NoteContainer = styled.div`
 
 export const NotePad = styled.div`
   width: 100%;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   textarea {
     background: transparent;
+    height: 100%;
     width: 100%;
     resize: none;
     border: none;
@@ -133,4 +130,14 @@ export const FeelingSection = styled.div`
       white-space: pre-wrap;
     }
   }
+`;
+
+export const Warning = styled.p`
+  margin-top: 1.5rem;
+  font-weight: 400;
+  font-size: 1rem;
+  align-items: center;
+  text-align: center;
+  color: rgb(220 38 38);
+  margin-bottom: 1rem;
 `;

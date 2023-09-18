@@ -9,6 +9,7 @@ import {
   FeelingSection,
   NoteContainer,
   NotePad,
+  Warning,
 } from "./styles";
 
 import { BiLeftArrowAlt } from "react-icons/bi";
@@ -18,6 +19,7 @@ import { ptBR } from "date-fns/locale";
 import { capitalizeFirstLetter, getRandomColor } from "../../utils";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../services";
+import { Textarea } from "../../components/textarea";
 
 export function Detail() {
   const { id } = useParams();
@@ -25,15 +27,16 @@ export function Detail() {
     textareaRef,
     isEditing,
     annotation,
+    title,
     note,
     setNote,
+    setTitle,
     setAnnotation,
     handleUpdateActive,
     handleUpdateNote,
   } = useContext(NoteContext);
   const navigate = useNavigate();
 
-  
   const styledButtonEditing = {
     background: isEditing ? "#fff" : "rgb(15 23 42)",
     color: isEditing ? "rgb(15 23 42)" : "#fff",
@@ -55,6 +58,7 @@ export function Detail() {
       if (!doc.data()) {
         navigate("/");
       }
+      setTitle(doc.data()?.title);
       setAnnotation(doc.data()?.note);
       setNote({
         id: doc.id,
@@ -82,11 +86,11 @@ export function Detail() {
         </button>
       </ActionContainer>
       <NoteContainer>
-        <h1>
-          {capitalizeFirstLetter(
-            note?.title ? note.title : "Nenhum Título encontrado :("
-          )}
-        </h1>
+        <Textarea
+          disabled={!isEditing}
+          onChange={(e) => setTitle(e.target.value)}
+          value={capitalizeFirstLetter(title)}
+        />
         <div>
           <span>
             {note?.created &&
@@ -120,6 +124,11 @@ export function Detail() {
           ))}
         </h1>
       </FeelingSection>
+      {isEditing && (
+        <Warning>
+          Agora você poderá atualizar o título e a anotação!
+        </Warning>
+      )}
     </DetailContainer>
   );
 }

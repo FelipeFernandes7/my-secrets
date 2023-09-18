@@ -27,10 +27,12 @@ interface NoteProviderProps {
 interface NoteContextType {
   note: Notes | undefined;
   data: Notes[];
+  title: string;
   isEditing: boolean;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
   annotation: string | undefined;
   setNote: Dispatch<SetStateAction<Notes | undefined>>;
+  setTitle: Dispatch<SetStateAction<string>>
   setAnnotation: Dispatch<SetStateAction<string>>;
   handleDeleteNote: (id: string) => void;
   handleTextareaChange: () => void;
@@ -61,6 +63,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
   const [data, setData] = useState<Notes[]>([]);
   const [note, setNote] = useState<Notes>();
   const [annotation, setAnnotation] = useState("");
+  const [title, setTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   async function handleDeleteNote(id: string) {
@@ -123,6 +126,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
       const docRef = doc(db, "notes", String(id));
       await updateDoc(docRef, {
         note: annotation,
+        title:title
       });
       toast.success("Nota atualizada com sucesso!", {
         position: "top-center",
@@ -150,6 +154,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
       value={{
         data,
         note,
+        title,
         textareaRef,
         isEditing,
         annotation,
@@ -157,6 +162,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
         handleTextareaChange,
         handleUpdateNote,
         handleUpdateActive,
+        setTitle,
         fetchDocs,
         setAnnotation,
         setNote,
