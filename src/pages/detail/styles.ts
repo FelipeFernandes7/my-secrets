@@ -75,7 +75,7 @@ export const NotePad = styled.div`
   flex-direction: column;
   textarea {
     background: transparent;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     resize: none;
     border: none;
