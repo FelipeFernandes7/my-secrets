@@ -3,6 +3,7 @@ import { Home } from "./pages/home";
 import { Layout } from "./components/layout";
 import { Note } from "./pages/note";
 import { Detail } from "./pages/detail";
+import { Login } from "./pages/login";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/login",
+    element: <Login />,
+  }
 ]);
 
 export { router };
