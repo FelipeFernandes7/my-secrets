@@ -1,4 +1,5 @@
 import { Section } from "./styles";
+
 export function Title() {
   return (
     <Section>
