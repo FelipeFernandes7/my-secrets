@@ -9,15 +9,11 @@ import { NotFound } from "./pages/notFound";
 
 const router = createBrowserRouter([
   {
-    element: (
-      <Private>
-        <Layout />
-      </Private>
-    ),
+    element: <Layout />,
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Private><Home /></Private>,
       },
       {
         path: "/note",
