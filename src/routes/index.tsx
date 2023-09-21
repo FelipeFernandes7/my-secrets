@@ -13,8 +13,8 @@ export function Private({ children }: PrivateProps) {
     return (
       <S.SpinnerContainer>
         <Spinner style={{
-          width: "50%",
-          height: "50%"
+          width: 300,
+          height: 300
         }} />
       </S.SpinnerContainer>
     );

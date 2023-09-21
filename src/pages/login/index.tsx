@@ -16,6 +16,7 @@ interface InputPasswordTypeProps {
   type: "password" | "text";
 }
 export function Login() {
+  const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState<InputPasswordTypeProps>({
     type: "password",
   });
@@ -32,20 +33,35 @@ export function Login() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
   });
   function onSubmit(formData: FormData) {
+    setIsLoading(true);
     signInWithEmailAndPassword(auth, formData.email, formData.password)
       .then(() => {
-        toast.success("Login efetuado com sucesso");
-
-        navigate("/dashboard", { replace: true });
+        toast.success("Login efetuado com sucesso", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+        setIsLoading(false);
+        navigate("/", { replace: true });
       })
       .catch((error) => {
-        toast.error("Não foi possível realizar o login :(");
+        toast.error("Não foi possível realizar o login :(", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+        setIsLoading(false);
         console.log(error.message);
       });
   }
@@ -82,7 +98,17 @@ export function Login() {
               handleSeePassword={changeVisibleState}
               error={errors.password}
             />
-            <Button type="button" label={"Entrar"} />
+            <Button
+              disabled={
+                getValues("email") === "" ||
+                (getValues("password") === "" && true)
+              }
+              bgColor="#dbeafe"
+              color="#000"
+              isLoading={isLoading}
+              type="submit"
+              label={"Entrar"}
+            />
           </S.IptContainer>
         </form>
         <S.Box>
