@@ -4,8 +4,8 @@ import { Layout } from "./components/layout";
 import { Note } from "./pages/note";
 import { Detail } from "./pages/detail";
 import { Login } from "./pages/login";
-import { Private } from "./routes";
 import { NotFound } from "./pages/notFound";
+import { Private } from "./routes";
 
 const router = createBrowserRouter([
   {
@@ -13,15 +13,27 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Private><Home /></Private>,
+        element: (
+          <Private>
+            <Home />
+          </Private>
+        ),
       },
       {
         path: "/note",
-        element: <Note />,
+        element: (
+          <Private>
+            <Note />
+          </Private>
+        ),
       },
       {
         path: "/note/:id",
-        element: <Detail />,
+        element: (
+          <Private>
+            <Detail />
+          </Private>
+        ),
       },
     ],
   },
