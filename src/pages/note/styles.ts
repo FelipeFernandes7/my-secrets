@@ -1,11 +1,17 @@
 import { styled } from "styled-components";
 
-export const DailyContainer = styled.div`
+export const NoteContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  @media screen and (max-width: 768px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 export const Title = styled.div`
   margin-top: 1.5rem;
@@ -32,6 +38,9 @@ export const Form = styled.form`
   border-radius: 1.5rem;
   transition: all linear 0.3s;
   background-color: rgb(15 23 42);
+  @media screen and (max-width: 768px) {
+    border-radius: 2rem 2rem 0 0;
+  }
   p {
     margin-top: 0.5rem;
     margin-left: 0.5rem;
@@ -45,7 +54,27 @@ export const FormContent = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
+  input {
+    margin-top: 1.5rem;
+    background-color: rgb(2 6 23);
+    color: #fff;
+    border-radius: 1rem;
+    width: 100%;
+    height: 3rem;
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgb(2 6 23);
+    border: 1px solid rgb(30 41 59);
+    transition: height 0.3s ease;
+    font-family: "Montserrat";
+    overflow-y: hidden;
+    resize: none;
+    &::placeholder {
+      color: #f1f1f1;
+    }
+  }
   textarea {
     margin-top: 1.5rem;
     background-color: rgb(2 6 23);
@@ -95,17 +124,8 @@ export const BtnContainer = styled.div`
   margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
-  button {
-    width: 30%;
-    color: #fff;
-    font-size: 0.95rem;
-    height: 3rem;
-    border: 2px solid rgb(30 41 59);
-    background: transparent;
-    border-radius: 1rem;
-    cursor: pointer;
-  }
 `;
 
 export const Button = styled.button`
@@ -118,7 +138,11 @@ export const Button = styled.button`
   font-weight: 400;
   background-color: rgb(37 99 235);
   margin-bottom: 0.5rem;
+  cursor: pointer;
   color: #ffff;
+  &:disabled {
+    opacity: 0.5;
+  }
   @media screen and (max-width: 768px) {
     width: 100%;
   }
