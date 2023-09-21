@@ -40,6 +40,7 @@ export function Input({
       <S.Container borderColor={error && "#dc2626"}>
         {register && name ? (
           <S.InputStyled
+            autoComplete="off"
             errorColor={error && "#dc2626"}
             type={type}
             placeholder={placeholder}
