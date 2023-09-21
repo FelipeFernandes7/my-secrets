@@ -4,10 +4,16 @@ import { Layout } from "./components/layout";
 import { Note } from "./pages/note";
 import { Detail } from "./pages/detail";
 import { Login } from "./pages/login";
+import { Private } from "./routes";
+import { NotFound } from "./pages/notFound";
 
 const router = createBrowserRouter([
   {
-    element: <Layout />,
+    element: (
+      <Private>
+        <Layout />
+      </Private>
+    ),
     children: [
       {
         path: "/",
@@ -26,7 +32,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-  }
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ]);
 
 export { router };

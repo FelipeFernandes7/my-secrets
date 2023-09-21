@@ -1,77 +1,83 @@
 import { styled } from "styled-components";
+import { GiDialPadlock } from "react-icons/gi";
 
-export const Box = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export const Section = styled.section`
-  width: 100%;
+export const LoginContainer = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
-  background: #020617;
-  z-index: -1;
-  height: 17rem;
-  span {
-    margin-top: 1.5rem;
-    margin-bottom: 1.2rem;
-  }
-`;
-export const ContentStyled = styled.div`
-  z-index: 1;
   width: 100%;
+`;
+
+export const Content = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
+  gap: 1rem;
   form {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    border-radius: 1.5rem 1.5rem 0 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgb(15 23 42);
-    h1 {
-      text-align: center;
-      width: 100%;
-      margin-top: 1.5rem;
-      font-size: 2rem;
-      font-weight: 400;
-      font-family: "Montserrat";
-      margin-bottom: 1.2rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    @media screen and (max-width: 768px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
   }
 `;
-export const Wrapper = styled.div`
+export const Text = styled.h1`
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  display: flex;
+  font-size: 1rem;
+  justify-content: center;
+  font-weight: 700;
+  font-family: "Montserrat";
+`;
+export const Box = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #111827;
+  gap: 1rem;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const IconStyled = styled(GiDialPadlock)`
+  display: inline-block;
+  animation: animate 1s linear forwards;
+  opacity: 0;
+  animation-delay: 5s;
+  font-size: 10rem;
+
+  @keyframes animate {
+    0% {
+      opacity: 0;
+      transform: rotateY(90deg);
+      filter: blur(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: rotateY(0deg);
+      filter: blur(0);
+    }
+  }
+`;
+
+export const IptContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
-  gap: 1.5rem;
-`;
-
-export const ButtonWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin-bottom: 1.5rem;
-  button {
-    bottom: 1.5rem;
-    width: 100%;
-    height: 3rem;
-    align-items: center;
-    justify-content: center;
-    background: #1d4ed8;
-    border: none;
-    border-radius: 0.75rem;
-    font-size: 0.95rem;
-    color: #fff;
+  max-width: 450px;
+  button{
+    margin-top: 2rem;
   }
 `;
