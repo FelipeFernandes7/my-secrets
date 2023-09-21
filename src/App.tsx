@@ -27,15 +27,15 @@ const router = createBrowserRouter([
         path: "/note/:id",
         element: <Detail />,
       },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
   },
   {
     path: "/login",
     element: <Login />,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
   },
 ]);
 
