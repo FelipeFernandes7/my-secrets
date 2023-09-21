@@ -5,7 +5,7 @@ export const Container = styled.div<{ borderColor?: string }>`
   border-radius: 0.5rem;
   border: ${(props) =>
     props.borderColor ? `1px solid ${props.borderColor}` : "none"};
-  background-color: #111827;
+  background: #111827;
   width: 100%;
   height: 3.2rem;
   padding-left: 0.5rem;
@@ -14,7 +14,8 @@ export const Container = styled.div<{ borderColor?: string }>`
 `;
 export const InputStyled = styled.input<{ errorColor?: string }>`
   width: 100%;
-  height: 3.2rem;
+  height: 100%;
+  border-radius: 0.5rem;
   font-size: 0.875rem;
   padding-left: 1rem;
   background: transparent;
@@ -25,6 +26,9 @@ export const InputStyled = styled.input<{ errorColor?: string }>`
   &::placeholder {
     color: ${(props) => (props.errorColor ? props.errorColor : "#cbd5e1")};
     font-size: 0.875rem;
+  }
+  &::selection{
+    background: red;
   }
 `;
 
