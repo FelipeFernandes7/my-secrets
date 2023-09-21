@@ -10,10 +10,10 @@ import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Toaster position="bottom-center" reverseOrder={false} />
-    <GlobalStyles />
     <AuthProvider>
       <NoteProvider>
+        <Toaster position="bottom-center" reverseOrder={false} />
+        <GlobalStyles />
         <RouterProvider router={router} />
       </NoteProvider>
     </AuthProvider>
