@@ -5,5 +5,5 @@ export const profile = {
     .join("@")
     .split(" ")
     .join("_"),
-  img: "https://images7.alphacoders.com/129/thumb-1920-1299888.png",
+  img: "https://publicdomainvectors.org/tn_img/abstract-user-flat-4.webp",
 };

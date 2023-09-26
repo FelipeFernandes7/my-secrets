@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../../components/input";
 import { Title } from "../../components/title";
 
 import * as S from "./styles";
 import { Button } from "../../components/button";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../services";
 import toast from "react-hot-toast";
@@ -72,6 +72,13 @@ export function Login() {
       setIsVisible({ type: "password" });
     }
   }
+
+  useEffect(() => {
+    async function handleLogout() {
+      await signOut(auth);
+    }
+    handleLogout();
+  }, []);
 
   return (
     <S.LoginContainer>

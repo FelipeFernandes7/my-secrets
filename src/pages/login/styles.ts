@@ -79,5 +79,6 @@ export const IptContainer = styled.div`
   max-width: 450px;
   button{
     margin-top: 2rem;
+    max-width: 295px;
   }
 `;
