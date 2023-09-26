@@ -77,8 +77,17 @@ export const IptContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   max-width: 450px;
-  button{
+  button {
     margin-top: 2rem;
-    max-width: 295px;
+  }
+  @media screen and (max-width: 768px) {
+    button {
+      max-width: 350px;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    button {
+      max-width: 300px;
+    }
   }
 `;
