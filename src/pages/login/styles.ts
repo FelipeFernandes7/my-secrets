@@ -85,9 +85,4 @@ export const IptContainer = styled.div`
       max-width: 350px;
     }
   }
-  @media screen and (max-width: 740px) {
-    button {
-      max-width: 300px;
-    }
-  }
 `;
