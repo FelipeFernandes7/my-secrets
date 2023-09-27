@@ -6,6 +6,7 @@ import { Detail } from "./pages/detail";
 import { Login } from "./pages/login";
 import { NotFound } from "./pages/notFound";
 import { Private } from "./routes";
+import { Register } from "./pages/register";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "*",

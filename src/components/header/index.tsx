@@ -15,16 +15,9 @@ export function Header() {
       <HeaderContent>
         <Profile>
           <a href="/">
-            <img
-              src={
-                !user
-                  ? profile.img
-                  : "https://vocesabianime.com/wp-content/uploads/2023/07/Explicando-os-Poderes-de-Satoru-Gojo-1133x637-1.jpg"
-              }
-              alt="ig.news"
-            />
+            <img src={profile.img} alt="ig.news" />
           </a>
-          <span>{!user ? "Visitante" : user.name}</span>
+          <span>{user && user.name}</span>
         </Profile>
         <Action>
           <button>

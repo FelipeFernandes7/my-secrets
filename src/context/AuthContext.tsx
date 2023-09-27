@@ -10,6 +10,7 @@ interface AuthContextType {
   user: UserProps | null;
   signed: boolean;
   loadingAuth: boolean;
+  handleInfoUser: ({ name, email, uid, avatar }: UserProps) => void;
 }
 
 interface UserProps {
@@ -40,6 +41,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   });
 
+  function handleInfoUser({ name, email, uid, avatar }: UserProps) {
+    setUser({
+      uid,
+      name,
+      email,
+      avatar: avatar || null,
+    });
+  }
+
   useEffect(() => {
     unsub();
 
@@ -54,6 +64,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         user,
         signed: !!user,
         loadingAuth,
+        handleInfoUser,
       }}
     >
       {children}

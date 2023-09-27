@@ -24,6 +24,9 @@ interface NoteProviderProps {
   children: ReactNode;
 }
 
+interface InputPasswordTypeProps {
+  type: "password" | "text";
+}
 interface NoteContextType {
   note: Notes | undefined;
   data: Notes[];
@@ -31,10 +34,12 @@ interface NoteContextType {
   isEditing: boolean;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
   annotation: string | undefined;
-  setIsEditing: Dispatch<SetStateAction<boolean>>
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
   setNote: Dispatch<SetStateAction<Notes | undefined>>;
-  setTitle: Dispatch<SetStateAction<string>>
+  setTitle: Dispatch<SetStateAction<string>>;
   setAnnotation: Dispatch<SetStateAction<string>>;
+  isVisible: InputPasswordTypeProps;
+  changeVisibleState: () => void;
   handleDeleteNote: (id: string) => void;
   handleTextareaChange: () => void;
   handleUpdateNote: (id: string) => void;
@@ -67,6 +72,17 @@ export function NoteProvider({ children }: NoteProviderProps) {
   const [title, setTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [isVisible, setIsVisible] = useState<InputPasswordTypeProps>({
+    type: "password",
+  });
+
+  function changeVisibleState() {
+    if (isVisible.type === "password") {
+      setIsVisible({ type: "text" });
+    } else {
+      setIsVisible({ type: "password" });
+    }
+  }
   async function handleDeleteNote(id: string) {
     const docRef = doc(db, "notes", id);
     await deleteDoc(docRef);
@@ -127,7 +143,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
       const docRef = doc(db, "notes", String(id));
       await updateDoc(docRef, {
         note: annotation,
-        title:title
+        title: title,
       });
       toast.success("Nota atualizada com sucesso!", {
         position: "top-center",
@@ -159,6 +175,8 @@ export function NoteProvider({ children }: NoteProviderProps) {
         textareaRef,
         isEditing,
         annotation,
+        isVisible,
+        changeVisibleState,
         handleDeleteNote,
         handleTextareaChange,
         handleUpdateNote,

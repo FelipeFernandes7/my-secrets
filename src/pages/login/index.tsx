@@ -12,14 +12,12 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-interface InputPasswordTypeProps {
-  type: "password" | "text";
-}
+import { useNote } from "../../hooks";
+
 export function Login() {
+  const { isVisible, changeVisibleState } = useNote();
   const [isLoading, setIsLoading] = useState(false);
-  const [isVisible, setIsVisible] = useState<InputPasswordTypeProps>({
-    type: "password",
-  });
+
   const schema = z.object({
     email: z
       .string()
@@ -33,7 +31,6 @@ export function Login() {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -64,13 +61,6 @@ export function Login() {
         setIsLoading(false);
         console.log(error.message);
       });
-  }
-  function changeVisibleState() {
-    if (isVisible.type === "password") {
-      setIsVisible({ type: "text" });
-    } else {
-      setIsVisible({ type: "password" });
-    }
   }
 
   useEffect(() => {
@@ -106,10 +96,6 @@ export function Login() {
               error={errors.password}
             />
             <Button
-              disabled={
-                getValues("email") === "" ||
-                (getValues("password") === "" && true)
-              }
               bgColor="#dbeafe"
               color="#000"
               isLoading={isLoading}
