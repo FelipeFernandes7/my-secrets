@@ -31,6 +31,9 @@ export const FormContent = styled.div`
   justify-content: center;
   gap: 1rem;
   button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     margin-top: 1.5rem;
     height: 3rem;
@@ -40,26 +43,5 @@ export const FormContent = styled.div`
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
-  }
-`;
-
-export const AvatarField = styled.input`
-  width: 100%;
-  height: 3.2rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  padding-left: 1rem;
-  padding-top: 1rem;
-  background: transparent;
-  outline: none;
-  border: 1px dashed #cbd5e1;
-  color: #fff;
-  font-family: "Montserrat";
-  &::placeholder {
-    color: #cbd5e1;
-    font-size: 0.875rem;
-  }
-  &::selection {
-    background: red;
   }
 `;

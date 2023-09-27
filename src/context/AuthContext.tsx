@@ -10,14 +10,13 @@ interface AuthContextType {
   user: UserProps | null;
   signed: boolean;
   loadingAuth: boolean;
-  handleInfoUser: ({ name, email, uid, avatar }: UserProps) => void;
+  handleInfoUser: ({ name, email, uid }: UserProps) => void;
 }
 
 interface UserProps {
   uid: string;
   name: string | null;
   email: string | null;
-  avatar: string | null;
 }
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -32,7 +31,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         uid: user.uid,
         email: user.email,
         name: user.displayName,
-        avatar: user.photoURL,
       });
       setLoadingAuth(false);
     } else {
@@ -41,12 +39,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   });
 
-  function handleInfoUser({ name, email, uid, avatar }: UserProps) {
+  function handleInfoUser({ name, email, uid }: UserProps) {
     setUser({
       uid,
       name,
       email,
-      avatar: avatar || null,
     });
   }
 

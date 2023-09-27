@@ -35,7 +35,6 @@ const schema = z.object({
     .string()
     .min(6, "A senha deve ter pelo menos 6 caracteres")
     .nonempty("O campo senha é obrigatório"),
-  avatar: z.string().nullable(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -66,12 +65,10 @@ export function Register() {
       .then(async (user) => {
         await updateProfile(user.user, {
           displayName: formData.name,
-          photoURL: formData.avatar,
         });
         handleInfoUser({
           name: formData.name,
           email: formData.email,
-          avatar: user.user.photoURL,
           uid: user.user.uid,
         });
         toast.success("Usuário cadastrado com sucesso", {
@@ -152,12 +149,6 @@ export function Register() {
             placeholder={"Confirme sua senha"}
             register={register}
             error={errors.confPassword}
-          />
-          <S.AvatarField
-            type="file"
-            style={{ color: errors.avatar ? "#dc2626" : "#fff" }}
-            placeholder="Adicionar foto de perfil"
-            {...register("avatar")}
           />
           <button type="submit">
             {isLoading ? (
