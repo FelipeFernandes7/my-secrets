@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,11 +38,34 @@ export const FormContent = styled.div`
     text-align: center;
     margin-top: 1.5rem;
     height: 3rem;
-    background: #fff;
+    background: rgb(37 99 235);
+    color: #fff;
     font-weight: 700;
     font-size: 0.95rem;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
+  }
+`;
+
+export const ContainerButtonReturn = styled.div`
+  position: fixed;
+  top: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+  button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    background: rgb(37 99 235);
+    color: #fff;
   }
 `;

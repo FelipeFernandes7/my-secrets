@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { z } from "zod";
+import { BsArrowLeftShort } from "react-icons/bs";
 
 import * as S from "./styles";
 
@@ -94,8 +95,17 @@ export function Register() {
     });
   }
 
+  const handleNavigate = () => {
+    navigate("/login", { replace: true });
+  };
+
   return (
     <S.Container>
+      <S.ContainerButtonReturn>
+        <button onClick={handleNavigate}>
+          <BsArrowLeftShort size={30} />
+        </button>
+      </S.ContainerButtonReturn>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
         <h1>Cadastro</h1>
         <S.FormContent>
