@@ -67,8 +67,8 @@ export const IptContainer = styled.div`
   max-width: 450px;
   button {
     margin-top: 2rem;
-    background: rgb(37 99 235);
-    color: #fff;
+    background: #fff;
+    color: rgb(37 99 235);
   }
 
   input[type="password"] {
