@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "../../components/input";
 import { Spinner } from "../../components/spinner";
-import { useAuth, useNote } from "../../hooks";
+import { useNote } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
@@ -41,7 +41,6 @@ type FormData = z.infer<typeof schema>;
 
 export function Register() {
   const navigate = useNavigate();
-  const { handleInfoUser } = useAuth();
   const { isVisible, changeVisibleState } = useNote();
   const [isLoading, setIsLoading] = useState(false);
   const [confPasswordIsVisible, setConfPasswordIsVisible] =
@@ -66,11 +65,7 @@ export function Register() {
         await updateProfile(user.user, {
           displayName: formData.name,
         });
-        handleInfoUser({
-          name: formData.name,
-          email: formData.email,
-          uid: user.user.uid,
-        });
+
         toast.success("Usuário cadastrado com sucesso", {
           style: {
             backgroundColor: "#232323",
@@ -80,7 +75,7 @@ export function Register() {
         });
         setIsLoading(false);
         setInterval(() => {
-          navigate("/login", { replace: true });
+          navigate("/", { replace: true });
         }, 3000);
       })
       .catch((error) => {

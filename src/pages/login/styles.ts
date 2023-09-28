@@ -13,18 +13,6 @@ export const Content = styled.div`
   justify-content: center;
   height: 100vh;
   gap: 1rem;
-  form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    @media screen and (max-width: 768px) {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-  }
 `;
 export const Text = styled.h1`
   margin-top: 1rem;
@@ -88,6 +76,27 @@ export const IptContainer = styled.div`
   @media screen and (max-width: 768px) {
     button {
       max-width: 350px;
+    }
+  }
+`;
+
+export const Form = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  @media screen and (max-width: 768px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  span {
+    font-size: 0.95rem;
+    display: flex;
+    gap: 0.5rem;
+    a {
+      color: rgb(29 78 216);
     }
   }
 `;

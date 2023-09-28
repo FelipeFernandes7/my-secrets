@@ -5,18 +5,19 @@ import { Title } from "../../components/title";
 import * as S from "./styles";
 import { Button } from "../../components/button";
 
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../services";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useNote } from "../../hooks";
+import { useAuth, useNote } from "../../hooks";
 
 export function Login() {
   const { isVisible, changeVisibleState } = useNote();
   const [isLoading, setIsLoading] = useState(false);
+  const { signIn } = useAuth();
 
   const schema = z.object({
     email: z
@@ -38,29 +39,28 @@ export function Login() {
   });
   function onSubmit(formData: FormData) {
     setIsLoading(true);
-    signInWithEmailAndPassword(auth, formData.email, formData.password)
-      .then(() => {
-        toast.success("Login efetuado com sucesso", {
-          position: "top-center",
-          style: {
-            background: "#232323",
-            color: "#fff",
-          },
-        });
-        setIsLoading(false);
-        navigate("/", { replace: true });
-      })
-      .catch((error) => {
-        toast.error("Não foi possível realizar o login :(", {
-          position: "top-center",
-          style: {
-            background: "#232323",
-            color: "#fff",
-          },
-        });
-        setIsLoading(false);
-        console.log(error.message);
+    const { email, password } = formData;
+    signIn(email, password).then(() => {
+      toast.success("Login efetuado com sucesso", {
+        position: "top-center",
+        style: {
+          background: "#232323",
+          color: "#fff",
+        },
       });
+
+      setIsLoading(false);
+      navigate("/");
+    }).catch((error) => {
+      toast.error(error.message, {
+        position: "top-center",
+        style: {
+          background: "#232323",
+          color: "#fff",
+        },
+      });
+      setIsLoading(false);
+    });
   }
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export function Login() {
   return (
     <S.LoginContainer>
       <S.Content>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <S.Form onSubmit={handleSubmit(onSubmit)}>
           <S.Text>
             <h1>Login</h1>
           </S.Text>
@@ -103,7 +103,10 @@ export function Login() {
               label={"Entrar"}
             />
           </S.IptContainer>
-        </form>
+          <span>
+            Ainda não tem uma conta? <Link to={"/register"}>Cadastre-se</Link>
+          </span>
+        </S.Form>
         <S.Box>
           <Title />
           <S.IconStyled />

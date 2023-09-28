@@ -8,14 +8,17 @@ interface PrivateProps {
 }
 
 export function Private({ children }: PrivateProps) {
-  const { signed, loadingAuth } = useAuth();
+  const { loadingAuth, user } = useAuth();
+  const signed = !!user;
   if (loadingAuth) {
     return (
       <S.SpinnerContainer>
-        <Spinner style={{
-          width: 200,
-          height: 200
-        }} />
+        <Spinner
+          style={{
+            width: 200,
+            height: 200,
+          }}
+        />
       </S.SpinnerContainer>
     );
   }

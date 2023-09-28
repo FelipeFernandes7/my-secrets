@@ -16,7 +16,7 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import { FaRegEdit } from "react-icons/fa";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { capitalizeFirstLetter, getRandomColor } from "../../utils";
+import { capitalizeFirstLetter, getRandomColor } from "../../helpers";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../services";
 import { Textarea } from "../../components/textarea";
