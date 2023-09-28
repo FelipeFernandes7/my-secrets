@@ -5,19 +5,18 @@ import { Title } from "../../components/title";
 import * as S from "./styles";
 import { Button } from "../../components/button";
 
-import { signOut } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../services";
-import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useAuth, useNote } from "../../hooks";
+import { z } from "zod";
+
+import toast from "react-hot-toast";
 
 export function Login() {
   const { isVisible, changeVisibleState } = useNote();
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, logOut } = useAuth();
 
   const schema = z.object({
     email: z
@@ -40,34 +39,33 @@ export function Login() {
   function onSubmit(formData: FormData) {
     setIsLoading(true);
     const { email, password } = formData;
-    signIn(email, password).then(() => {
-      toast.success("Login efetuado com sucesso", {
-        position: "top-center",
-        style: {
-          background: "#232323",
-          color: "#fff",
-        },
-      });
+    signIn(email, password)
+      .then(() => {
+        toast.success("Login efetuado com sucesso", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
 
-      setIsLoading(false);
-      navigate("/");
-    }).catch((error) => {
-      toast.error(error.message, {
-        position: "top-center",
-        style: {
-          background: "#232323",
-          color: "#fff",
-        },
+        setIsLoading(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+        setIsLoading(false);
       });
-      setIsLoading(false);
-    });
   }
 
   useEffect(() => {
-    async function handleLogout() {
-      await signOut(auth);
-    }
-    handleLogout();
+    logOut();
   }, []);
 
   return (

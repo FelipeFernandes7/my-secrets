@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { NoteContext } from "../../context/NoteContext";
 import { Container } from "../../components/container";
 import { Card } from "../../components/card";
@@ -19,23 +19,13 @@ export function Home() {
       <Container>
         {data.length > 0 &&
           data.map((note) => (
-            <Link
-              style={{
-                textDecoration: "none",
-                width: "100%",
-                color: "#fff",
-                transition: "all linear 0.3s",
-              }}
+            <Card
               key={note.id}
-              to={`/note/${note.id}`}
-            >
-              <Card
-                week={note.created}
-                hours={note.created}
-                title={note.title}
-                id={note.id}
-              />
-            </Link>
+              week={note.created}
+              hours={note.created}
+              title={note.title}
+              id={note.id}
+            />
           ))}
       </Container>
       <AddBtn onClick={handleAddNewNote}>

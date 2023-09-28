@@ -40,22 +40,34 @@ export const Title = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  h1 {
-    font-weight: 400;
-    font-size: 1.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 500px;
-  }
-  @media screen and (max-width: 740px) {
+  a {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     h1 {
       font-weight: 400;
       font-size: 1.5rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 350px;
+      max-width: 500px;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    a {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h1 {
+        font-weight: 400;
+        font-size: 1.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 350px;
+      }
     }
   }
 `;

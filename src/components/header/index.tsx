@@ -5,7 +5,8 @@ import { Action, HeaderContainer, HeaderContent, Profile } from "./styles";
 import { BiLogIn } from "react-icons/bi";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 export function Header() {
-  const { loadingAuth, signed, user } = useAuth();
+  const { loadingAuth, user } = useAuth();
+  const signed = !!user;
   const navigate = useNavigate();
   function handleLogin() {
     navigate("/login");

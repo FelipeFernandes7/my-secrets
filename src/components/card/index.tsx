@@ -4,6 +4,7 @@ import { BiSolidTrashAlt } from "react-icons/bi";
 import { CardContainer, DeleteContainer, Section, Title } from "./styles";
 import { useContext } from "react";
 import { NoteContext } from "../../context/NoteContext";
+import { Link } from "react-router-dom";
 
 interface CardProps {
   id: string;
@@ -29,7 +30,17 @@ export function Card({ week, hours, title, id }: CardProps) {
         <span>{format(new Date(hours), "p", { locale: ptBR })}h</span>
       </Section>
       <Title>
-        <h1>{title}</h1>
+        <Link
+          style={{
+            textDecoration: "none",
+            width: "100%",
+            color: "#fff",
+            transition: "all linear 0.3s",
+          }}
+          to={`/note/${id}`}
+        >
+          <h1>{title}</h1>
+        </Link>
       </Title>
     </CardContainer>
   );

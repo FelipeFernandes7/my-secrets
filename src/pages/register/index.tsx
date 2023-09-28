@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import { Input } from "../../components/input";
 import { Spinner } from "../../components/spinner";
-import { useNote } from "../../hooks";
+import { useAuth, useNote } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import {
-  createUserWithEmailAndPassword,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth } from "../../services";
 
 import * as S from "./styles";
@@ -41,8 +37,9 @@ type FormData = z.infer<typeof schema>;
 
 export function Register() {
   const navigate = useNavigate();
-  const { isVisible, changeVisibleState } = useNote();
   const [isLoading, setIsLoading] = useState(false);
+  const { signUpWithEmailAndPassword } = useAuth();
+  const { isVisible, changeVisibleState } = useNote();
   const [confPasswordIsVisible, setConfPasswordIsVisible] =
     useState<ConfPasswordVisible>({
       type: "password",
@@ -58,14 +55,10 @@ export function Register() {
   });
 
   async function onSubmit(formData: FormData) {
-    console.log("clicou");
     setIsLoading(true);
-    createUserWithEmailAndPassword(auth, formData.email, formData.password)
-      .then(async (user) => {
-        await updateProfile(user.user, {
-          displayName: formData.name,
-        });
-
+    const { email, password, name } = formData;
+    await signUpWithEmailAndPassword(email, password, name)
+      .then(() => {
         toast.success("Usuário cadastrado com sucesso", {
           style: {
             backgroundColor: "#232323",
