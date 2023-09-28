@@ -8,8 +8,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import { signOut } from "firebase/auth";
-import { auth } from "../../services";
 
 import * as S from "./styles";
 
@@ -38,7 +36,7 @@ type FormData = z.infer<typeof schema>;
 export function Register() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { signUpWithEmailAndPassword } = useAuth();
+  const { signUpWithEmailAndPassword, logOut } = useAuth();
   const { isVisible, changeVisibleState } = useNote();
   const [confPasswordIsVisible, setConfPasswordIsVisible] =
     useState<ConfPasswordVisible>({
@@ -87,10 +85,7 @@ export function Register() {
       });
   }
   useEffect(() => {
-    async function handleLogout() {
-      await signOut(auth);
-    }
-    handleLogout();
+    logOut();
   }, []);
 
   function handleShowConfPassword() {
