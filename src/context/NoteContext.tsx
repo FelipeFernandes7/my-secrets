@@ -87,7 +87,6 @@ export function NoteProvider({ children }: NoteProviderProps) {
       });
 
       setData(parsedNotes);
-      console.log(data, "data");
     });
 
     return () => off(todoRef);
