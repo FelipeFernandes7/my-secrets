@@ -33,8 +33,8 @@ export function Detail() {
     setTitle,
     setIsEditing,
     setAnnotation,
-    handleUpdateActive,
-    handleUpdateNote,
+    updateNote,
+    activeUpdateNote,
   } = useContext(NoteContext);
   const navigate = useNavigate();
 
@@ -66,8 +66,9 @@ export function Detail() {
         id: doc.id,
         created: doc.data()?.created.toDate(),
         feeling: doc.data()?.feeling,
-        note: doc.data()?.note,
+        annotation: doc.data()?.annotation,
         title: doc.data()?.title,
+        author: doc.data()?.author,
       });
     });
   }
@@ -83,7 +84,7 @@ export function Detail() {
         <button onClick={toGoBack}>
           <BiLeftArrowAlt />
         </button>
-        <button style={styledButtonEditing} onClick={handleUpdateActive}>
+        <button style={styledButtonEditing} onClick={activeUpdateNote}>
           <FaRegEdit />
         </button>
       </ActionContainer>
@@ -111,7 +112,7 @@ export function Detail() {
           value={annotation}
         />
         {isEditing && (
-          <button onClick={() => handleUpdateNote(String(id))}>
+          <button onClick={() => updateNote(String(id), annotation!, title)}>
             Atualizar Registro
           </button>
         )}

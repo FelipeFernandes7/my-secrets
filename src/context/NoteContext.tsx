@@ -8,16 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { db } from "../services";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  updateDoc,
-} from "firebase/firestore";
+import { useAuth } from "../hooks";
+import { off, onValue, push, ref, remove, update } from "firebase/database";
+import { database } from "../services";
 import toast from "react-hot-toast";
 
 interface NoteProviderProps {
@@ -34,38 +27,43 @@ interface NoteContextType {
   isEditing: boolean;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
   annotation: string | undefined;
+  addNote: (note: Notes) => void;
+  updateNote: (id: string, newAnnotation: string, title?: string) => void;
+  deleteNote: (id: string) => void;
+  changeTextarea: () => void;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   setNote: Dispatch<SetStateAction<Notes | undefined>>;
   setTitle: Dispatch<SetStateAction<string>>;
   setAnnotation: Dispatch<SetStateAction<string>>;
   isVisible: InputPasswordTypeProps;
   changeVisibleState: () => void;
-  handleDeleteNote: (id: string) => void;
-  handleTextareaChange: () => void;
-  handleUpdateNote: (id: string) => void;
-  handleUpdateActive: () => void;
-  fetchDocs: () => void;
+  activeUpdateNote: () => void;
 }
+
+type Feeling = {
+  [key in
+    | "happy"
+    | "sad"
+    | "anxious"
+    | "insecure"
+    | "excited"
+    | "afraid"
+    | "disciplined"
+    | "focused"
+    | "unshakable"]: boolean;
+};
 
 export type Notes = {
   id: string;
   title: string;
-  feeling: {
-    happy: boolean;
-    sad: boolean;
-    anxious: boolean;
-    insecure: boolean;
-    excited: boolean;
-    afraid: boolean;
-    disciplined: boolean;
-    focused: boolean;
-    unshakable: boolean;
-  };
-  note: string;
-  created: Date;
+  feeling: Feeling;
+  annotation: string;
+  author: string;
+  created: string;
 };
 export const NoteContext = createContext({} as NoteContextType);
 export function NoteProvider({ children }: NoteProviderProps) {
+  const { user } = useAuth();
   const [data, setData] = useState<Notes[]>([]);
   const [note, setNote] = useState<Notes>();
   const [annotation, setAnnotation] = useState("");
@@ -76,6 +74,34 @@ export function NoteProvider({ children }: NoteProviderProps) {
     type: "password",
   });
 
+  useEffect(() => {
+    if (!user) return;
+    const todoRef = ref(database, `notes/${user.uid}`);
+
+    // Firebase Realtime Event Listener
+    onValue(todoRef, (room) => {
+      const notesDatabase = room.val();
+      const firebaseNotes: Notes[] =
+        (notesDatabase && notesDatabase.notes) ?? {};
+
+      const parsedNotes = Object.entries(firebaseNotes).map(([key, value]) => {
+        return {
+          id: key,
+          title: value.title,
+          author: value.author,
+          feeling: value.feeling,
+          created: value.created,
+          annotation: value.annotation,
+        };
+      });
+
+      setData(parsedNotes);
+      console.log(data, 'data')
+    });
+
+    return () => off(todoRef);
+  }, [user]);
+
   function changeVisibleState() {
     if (isVisible.type === "password") {
       setIsVisible({ type: "text" });
@@ -83,40 +109,8 @@ export function NoteProvider({ children }: NoteProviderProps) {
       setIsVisible({ type: "password" });
     }
   }
-  async function handleDeleteNote(id: string) {
-    const docRef = doc(db, "notes", id);
-    await deleteDoc(docRef);
-    toast.success("Nota deletada com sucesso!", {
-      position: "top-center",
-      style: {
-        background: "#232323",
-        color: "#fff",
-      },
-    });
-    fetchDocs();
-  }
 
-  async function fetchDocs() {
-    const notesCollection = collection(db, "notes");
-    const q = query(notesCollection, orderBy("created", "desc"));
-    const docSnap = await getDocs(q);
-    const noteDoc = [] as Notes[];
-    docSnap.forEach((doc) => {
-      noteDoc.push({
-        id: doc.id,
-        created: doc.data().created.toDate(),
-        feeling: doc.data().feeling,
-        note: doc.data().note,
-        title: doc.data().title,
-      });
-    });
-    setData(noteDoc);
-  }
-  useEffect(() => {
-    fetchDocs();
-  }, []);
-
-  function handleTextareaChange() {
+  function changeTextarea() {
     const textarea = textareaRef.current;
     if (textarea !== null) {
       textarea.style.width = "100%";
@@ -126,10 +120,10 @@ export function NoteProvider({ children }: NoteProviderProps) {
   }
 
   useEffect(() => {
-    handleTextareaChange();
+    changeTextarea();
   }, [annotation]);
 
-  function handleUpdateActive() {
+  function activeUpdateNote() {
     setIsEditing((t) => !t);
     setTimeout(() => {
       if (textareaRef.current) {
@@ -138,32 +132,47 @@ export function NoteProvider({ children }: NoteProviderProps) {
     }, 10);
   }
 
-  async function handleUpdateNote(id: string) {
-    try {
-      const docRef = doc(db, "notes", String(id));
-      await updateDoc(docRef, {
-        note: annotation,
-        title: title,
+  async function addNote(note: Notes) {
+    if (!user) return;
+    const noteRef = ref(database, `notes/${user.uid}/notes`);
+    await push(noteRef, note)
+      .then(() => {
+        toast.success("Nota adicionada com sucesso!", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
       });
-      toast.success("Nota atualizada com sucesso!", {
-        position: "top-center",
-        style: {
-          background: "#232323",
-          color: "#fff",
-        },
-      });
-      fetchDocs();
-      setIsEditing(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Erro ao atualizar a nota!", {
-        position: "top-center",
-        style: {
-          background: "#232323",
-          color: "#fff",
-        },
-      });
-    }
+  }
+
+  async function deleteNote(id: string) {
+    if (!user) return;
+    const todoPath = ref(database, `notes/${user.uid}/notes/${id}`);
+    await remove(todoPath);
+    toast.success("Nota excluída com sucesso!", {
+      position: "top-center",
+      style: {
+        background: "#232323",
+        color: "#fff",
+      },
+    })
+  }
+
+  async function updateNote(id: string, newAnnotation: string, title?: string) {
+    if (!user) return;
+    const notePath = ref(database, `notes/${user.uid}/notes/${id}`);
+    await update(notePath, { annotation: newAnnotation, title: title });
   }
 
   return (
@@ -177,13 +186,13 @@ export function NoteProvider({ children }: NoteProviderProps) {
         annotation,
         isVisible,
         changeVisibleState,
-        handleDeleteNote,
-        handleTextareaChange,
-        handleUpdateNote,
-        handleUpdateActive,
+        deleteNote,
+        addNote,
+        changeTextarea,
+        updateNote,
+        activeUpdateNote,
         setIsEditing,
         setTitle,
-        fetchDocs,
         setAnnotation,
         setNote,
       }}

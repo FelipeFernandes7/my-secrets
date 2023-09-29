@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks";
 import { Action, HeaderContainer, HeaderContent, Profile } from "./styles";
 import { BiLogIn } from "react-icons/bi";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { generateRandomNickname } from "../../helpers/generateRandomNickname";
 export function Header() {
   const { loadingAuth, user } = useAuth();
   const signed = !!user;
@@ -18,7 +19,7 @@ export function Header() {
           <a href="/">
             <img src={profile.img} alt="ig.news" />
           </a>
-          <span>{user && user.name}</span>
+          <span>{user ? user.name : generateRandomNickname(5)}</span>
         </Profile>
         <Action>
           <button>

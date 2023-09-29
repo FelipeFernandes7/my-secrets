@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoteContext } from "../../context/NoteContext";
-import { Container } from "../../components/container";
 import { Card } from "../../components/card";
 
-import { AddBtn, HomeContainer } from "./styles";
+import * as S from "./styles";
 
 import { MdAdd } from "react-icons/md";
+import { NoRegister } from "../../components/noRegister";
 
 export function Home() {
   const { data } = useContext(NoteContext);
@@ -14,23 +14,25 @@ export function Home() {
   function handleAddNewNote() {
     navigate("/note");
   }
+  const noteCount = Object.keys(data).length;
   return (
-    <HomeContainer>
-      <Container>
-        {data.length > 0 &&
-          data.map((note) => (
-            <Card
-              key={note.id}
-              week={note.created}
-              hours={note.created}
-              title={note.title}
-              id={note.id}
-            />
-          ))}
-      </Container>
-      <AddBtn onClick={handleAddNewNote}>
+    <S.HomeContainer>
+      <S.StyledHomeContent>
+        {!noteCount && <NoRegister />}
+        {data.map((note) => (
+          <Card
+            key={note.id}
+            week={note.created}
+            hours={note.created}
+            title={note.title}
+            id={note.id}
+          />
+        ))}
+      </S.StyledHomeContent>
+
+      <S.AddBtn onClick={handleAddNewNote}>
         <MdAdd color="#fff" size={24} />
-      </AddBtn>
-    </HomeContainer>
+      </S.AddBtn>
+    </S.HomeContainer>
   );
 }

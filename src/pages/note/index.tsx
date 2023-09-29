@@ -1,102 +1,67 @@
-import { FormEvent, useContext, useState } from "react";
-import {
-  BtnContainer,
-  Button,
-  Form,
-  FormContent,
-  NoteContainer,
-  Section,
-  Title,
-} from "./styles";
+import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { noteLinks } from "../../constants/note";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../services";
-import toast from "react-hot-toast";
+
 import { Feeling } from "../../components/feeling";
-import { NoteContext } from "../../context/NoteContext";
-import { useAuth } from "../../hooks";
 
+import { useAuth, useNote } from "../../hooks";
+import { v4 as uuid } from "uuid";
+import * as S from "./styles";
+
+type FeelingProps = {
+  happy: boolean;
+  sad: boolean;
+  anxious: boolean;
+  insecure: boolean;
+  excited: boolean;
+  afraid: boolean;
+  disciplined: boolean;
+  focused: boolean;
+  unshakable: boolean;
+};
+const feelingObj = {
+  happy: false,
+  sad: false,
+  anxious: false,
+  insecure: false,
+  excited: false,
+  afraid: false,
+  disciplined: false,
+  focused: false,
+  unshakable: false,
+};
 export function Note() {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const [note, setNote] = useState("");
+  const [feeling, setFeeling] = useState<FeelingProps>(feelingObj);
+  const [annotation, setAnnotation] = useState("");
   const [title, setTitle] = useState("");
-  const [feeling, setFeeling] = useState({
-    happy: false,
-    sad: false,
-    anxious: false,
-    insecure: false,
-    excited: false,
-    afraid: false,
-    disciplined: false,
-    focused: false,
-    unshakable: false,
-  });
-  const { fetchDocs } = useContext(NoteContext);
+  const { addNote } = useNote();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  async function handleAddNewNote(e: FormEvent) {
+  function handleSubmitAnnotation(e: FormEvent) {
     e.preventDefault();
-    try {
-      await addDoc(collection(db, "notes"), {
+    if (annotation.trim().length > 0) {
+      addNote({
+        id: uuid(),
+        feeling: feeling,
         title: title,
-        feeling: {
-          happy: feeling.happy,
-          sad: feeling.sad,
-          anxious: feeling.anxious,
-          insecure: feeling.insecure,
-          excited: feeling.excited,
-          afraid: feeling.afraid,
-          disciplined: feeling.disciplined,
-          focused: feeling.focused,
-          unshakable: feeling.unshakable,
-        },
-        note: note,
-        userId: user?.uid,
-        created: new Date(),
+        annotation: annotation,
+        author: user ? user.uid : "unknown author",
+        created: new Date().toISOString(),
       });
-      setNote("");
-      setTitle("");
-      setFeeling({
-        excited: false,
-        happy: false,
-        sad: false,
-        afraid: false,
-        anxious: false,
-        disciplined: false,
-        focused: false,
-        insecure: false,
-        unshakable: false,
-      });
-      toast.success("Nota adicionada com sucesso!", {
-        position: "top-center",
-        style: {
-          background: "#232323",
-          color: "#fff",
-        },
-      });
-      await fetchDocs();
+      setAnnotation("");
       navigate("/");
-    } catch (error) {
-      console.log(error, "error");
-      toast.error("Erro ao adicionar nota!", {
-        position: "top-center",
-        style: {
-          background: "#232323",
-          color: "#fff",
-        },
-      });
     }
   }
 
   return (
-    <NoteContainer>
-      <Title>
+    <S.NoteContainer>
+      <S.Title>
         <h1>Como foi seu dia hoje?</h1>
-      </Title>
-      <Form onSubmit={handleAddNewNote}>
+      </S.Title>
+      <S.Form onSubmit={handleSubmitAnnotation}>
         <p>Faça uma anotação!</p>
-        <FormContent>
+        <S.FormContent>
           <input
             type="text"
             value={title}
@@ -104,14 +69,14 @@ export function Note() {
             placeholder="Digite o título"
           />
           <textarea
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
+            value={annotation}
+            onChange={(e) => setAnnotation(e.target.value)}
             placeholder="Registre sua nota..."
           />
-        </FormContent>
-        <Section>
+        </S.FormContent>
+        <S.Section>
           <p>Sentimento?</p>
-          <BtnContainer>
+          <S.BtnContainer>
             <Feeling
               isFeelingEnabled={feeling.happy}
               background="rgb(74 222 128)"
@@ -182,18 +147,18 @@ export function Note() {
                 setFeeling((f) => ({ ...f, afraid: !f.afraid }))
               }
             />
-          </BtnContainer>
-        </Section>
-        <Section>
+          </S.BtnContainer>
+        </S.Section>
+        <S.Section>
           <p>Acesse meu GitHub ⬇ </p>
           <Link to={noteLinks.url} target="_blank">
             deixe uma estrela :) ⭐!
           </Link>
-        </Section>
-        <Button disabled={!note || !title ? true : false} type="submit">
+        </S.Section>
+        <S.Button disabled={!annotation || !title ? true : false} type="submit">
           Enviar
-        </Button>
-      </Form>
-    </NoteContainer>
+        </S.Button>
+      </S.Form>
+    </S.NoteContainer>
   );
 }
