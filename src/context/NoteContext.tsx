@@ -192,10 +192,8 @@ export function NoteProvider({ children }: NoteProviderProps) {
     <NoteContext.Provider
       value={{
         data,
-
         textareaRef,
         isEditing,
-
         isVisible,
         changeVisibleState,
         deleteNote,
