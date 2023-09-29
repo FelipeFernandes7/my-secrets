@@ -2,7 +2,7 @@ export const noteLinks = {
   url: "https://github.com/FelipeFernandes7",
 };
 
-export const translation = {
+export const translated = {
   happy: "Feliz",
   sad: "Triste",
   anxious: "Ansioso",
@@ -13,3 +13,4 @@ export const translation = {
   focused: "Focado",
   unshakable: "Inabalável",
 };
+

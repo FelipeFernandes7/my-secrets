@@ -1,98 +1,95 @@
-import { useContext, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { NoteContext, Notes } from "../../context/NoteContext";
-import { translation } from "../../constants/note";
-import {
-  ActionContainer,
-  DetailContainer,
-  FeelingSection,
-  NoteContainer,
-  NotePad,
-  Warning,
-} from "./styles";
+import { Notes } from "../../context/NoteContext";
+import * as S from "./styles";
 
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { FaRegEdit } from "react-icons/fa";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { capitalizeFirstLetter, getRandomColor } from "../../helpers";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../services";
+import { database } from "../../services";
 import { Textarea } from "../../components/textarea";
+import { onValue, ref } from "firebase/database";
+import { useAuth, useNote } from "../../hooks";
+import { translation } from "../../helpers/translation";
 
-export function Detail() {
+export function NoteDetail() {
   const { id } = useParams();
-  const {
-    textareaRef,
-    isEditing,
-    annotation,
-    title,
-    note,
-    setNote,
-    setTitle,
-    setIsEditing,
-    setAnnotation,
-    updateNote,
-    activeUpdateNote,
-  } = useContext(NoteContext);
+  const noteId = String(id);
   const navigate = useNavigate();
+  const { isEditing, textareaRef, setIsEditing, activeUpdateNote, updateNote } =
+    useNote();
+  const { user } = useAuth();
+  const [note, setNote] = useState<Notes>();
 
   const styledButtonEditing = {
     background: isEditing ? "#fff" : "rgb(15 23 42)",
     color: isEditing ? "rgb(15 23 42)" : "#fff",
   };
 
-  const feelingNote =
-    note?.feeling &&
-    Object.keys(note?.feeling)
-      .filter((key) => note?.feeling[key as keyof Notes["feeling"]] === true)
-      .map((key) => translation[key as keyof typeof translation]);
-
   function toGoBack() {
     setIsEditing(false);
     navigate("/");
   }
-  function loadNote() {
-    if (!id) return;
-    const docRef = doc(db, "notes", id);
-    getDoc(docRef).then((doc) => {
-      if (!doc.data()) {
-        navigate("/");
-      }
-      setTitle(doc.data()?.title);
-      setAnnotation(doc.data()?.note);
-      setNote({
-        id: doc.id,
-        created: doc.data()?.created.toDate(),
-        feeling: doc.data()?.feeling,
-        annotation: doc.data()?.annotation,
-        title: doc.data()?.title,
-        author: doc.data()?.author,
-      });
+  useEffect(() => {
+    if (!noteId) return;
+
+    const noteRef = ref(database, `notes/${user?.uid}/notes/${noteId}`);
+
+    const getData = onValue(noteRef, (snapshot) => {
+      const data: Notes = {
+        id: noteId,
+        annotation: snapshot.val().annotation,
+        title: snapshot.val().title,
+        author: snapshot.val().author,
+        created: snapshot.val().created,
+        feeling: snapshot.val().feeling,
+      };
+      setNote(data);
     });
+
+    return () => {
+      getData();
+    };
+  }, [noteId]);
+
+  if (!note) {
+    return <div>Carregando...</div>;
   }
 
-  useEffect(() => {
-    loadNote();
-  }, []);
+  function onChangeTitle(e: ChangeEvent<HTMLTextAreaElement>) {
+    const hasNote = note && Object.keys(note).length;
+    if (hasNote) {
+      setNote({ ...note, id: noteId, title: e.target.value });
+    }
+  }
+
+  function onChangeAnnotation(e: ChangeEvent<HTMLTextAreaElement>) {
+    const hasNote = note && Object.keys(note).length;
+    if (hasNote) {
+      setNote({ ...note, id: noteId, annotation: e.target.value });
+    }
+  }
 
   const randomColor = getRandomColor();
+
   return (
-    <DetailContainer>
-      <ActionContainer>
+    <S.DetailContainer>
+      <S.ActionContainer>
         <button onClick={toGoBack}>
           <BiLeftArrowAlt />
         </button>
         <button style={styledButtonEditing} onClick={activeUpdateNote}>
           <FaRegEdit />
         </button>
-      </ActionContainer>
-      <NoteContainer>
+      </S.ActionContainer>
+      <S.NoteContainer>
         <Textarea
           disabled={!isEditing}
-          onChange={(e) => setTitle(e.target.value)}
-          value={capitalizeFirstLetter(title)}
+          onChange={onChangeTitle}
+          value={capitalizeFirstLetter(note ? note.title : "")}
         />
         <div>
           <span>
@@ -102,34 +99,44 @@ export function Detail() {
               })}
           </span>
         </div>
-      </NoteContainer>
-      <NotePad>
+      </S.NoteContainer>
+      <S.NotePad>
         <textarea
+          style={{
+            height: note.annotation.length < 100 ? "auto" : "500px",
+            overflowY: note.annotation.length >= 500 ? "auto" : "hidden",
+          }}
           ref={textareaRef}
           disabled={!isEditing}
-          onChange={(e) => setAnnotation(e.target.value)}
+          onChange={onChangeAnnotation}
           id="annotation"
-          value={annotation}
+          value={note?.annotation}
         />
+      </S.NotePad>
+      <S.containerButtonRegister>
         {isEditing && (
-          <button onClick={() => updateNote(String(id), annotation!, title)}>
+          <button
+            onClick={() => updateNote(noteId, note?.annotation, note?.title)}
+          >
             Atualizar Registro
           </button>
         )}
-      </NotePad>
-      <FeelingSection>
+      </S.containerButtonRegister>
+      <S.FeelingSection>
         <h1>
           Sentimento:
-          {feelingNote?.map((key) => (
+          {translation(note).map((key) => (
             <span style={{ background: randomColor }} key={key}>
               {key}
             </span>
           ))}
         </h1>
-      </FeelingSection>
+      </S.FeelingSection>
       {isEditing && (
-        <Warning>Agora você poderá atualizar o título e a anotação!</Warning>
+        <S.Warning>
+          Agora você poderá atualizar o título e a anotação!
+        </S.Warning>
       )}
-    </DetailContainer>
+    </S.DetailContainer>
   );
 }

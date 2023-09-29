@@ -70,13 +70,12 @@ export const NoteContainer = styled.div`
 
 export const NotePad = styled.div`
   width: 100%;
-  min-height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
   textarea {
     background: transparent;
-    min-height: 100% !important;
+    overflow-y: auto;
     width: 100%;
     resize: none;
     border: none;
@@ -87,25 +86,6 @@ export const NotePad = styled.div`
     margin-top: 1.5rem;
     outline: none;
     white-space: pre-wrap;
-  }
-  button {
-    margin-top: 1.5rem;
-    width: 30%;
-    height: 2.5rem;
-    border: none;
-    border-radius: 1.5rem;
-    font-size: 0.95rem;
-    font-weight: 400;
-    background-color: rgb(37 99 235);
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    color: #ffff;
-    &:disabled {
-      opacity: 0.5;
-    }
-    @media screen and (max-width: 768px) {
-      width: 100%;
-    }
   }
 `;
 
@@ -141,4 +121,30 @@ export const Warning = styled.p`
   text-align: center;
   color: rgb(220 38 38);
   margin-bottom: 1rem;
+`;
+
+export const containerButtonRegister = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    margin-top: 1.5rem;
+    width: 30%;
+    height: 2.5rem;
+    border: none;
+    border-radius: 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    background-color: rgb(37 99 235);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    color: #ffff;
+    &:disabled {
+      opacity: 0.5;
+    }
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
 `;

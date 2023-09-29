@@ -17,28 +17,22 @@ interface NoteProviderProps {
   children: ReactNode;
 }
 
-interface InputPasswordTypeProps {
+type InputPasswordTypeProps = {
   type: "password" | "text";
-}
-interface NoteContextType {
-  note: Notes | undefined;
+};
+type NoteContextType = {
   data: Notes[];
-  title: string;
+  isVisible: InputPasswordTypeProps;
   isEditing: boolean;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
-  annotation: string | undefined;
   addNote: (note: Notes) => void;
-  updateNote: (id: string, newAnnotation: string, title?: string) => void;
+  updateNote: (id: string, newAnnotation?: string, title?: string) => void;
   deleteNote: (id: string) => void;
   changeTextarea: () => void;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
-  setNote: Dispatch<SetStateAction<Notes | undefined>>;
-  setTitle: Dispatch<SetStateAction<string>>;
-  setAnnotation: Dispatch<SetStateAction<string>>;
-  isVisible: InputPasswordTypeProps;
   changeVisibleState: () => void;
   activeUpdateNote: () => void;
-}
+};
 
 type Feeling = {
   [key in
@@ -65,9 +59,6 @@ export const NoteContext = createContext({} as NoteContextType);
 export function NoteProvider({ children }: NoteProviderProps) {
   const { user } = useAuth();
   const [data, setData] = useState<Notes[]>([]);
-  const [note, setNote] = useState<Notes>();
-  const [annotation, setAnnotation] = useState("");
-  const [title, setTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [isVisible, setIsVisible] = useState<InputPasswordTypeProps>({
@@ -96,7 +87,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
       });
 
       setData(parsedNotes);
-      console.log(data, 'data')
+      console.log(data, "data");
     });
 
     return () => off(todoRef);
@@ -121,7 +112,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
 
   useEffect(() => {
     changeTextarea();
-  }, [annotation]);
+  }, []);
 
   function activeUpdateNote() {
     setIsEditing((t) => !t);
@@ -166,24 +157,46 @@ export function NoteProvider({ children }: NoteProviderProps) {
         background: "#232323",
         color: "#fff",
       },
-    })
+    });
   }
 
-  async function updateNote(id: string, newAnnotation: string, title?: string) {
+  async function updateNote(
+    id: string,
+    newAnnotation?: string,
+    title?: string
+  ) {
     if (!user) return;
     const notePath = ref(database, `notes/${user.uid}/notes/${id}`);
-    await update(notePath, { annotation: newAnnotation, title: title });
+    await update(notePath, { annotation: newAnnotation, title: title })
+      .then(() => {
+        toast.success("Nota atualizada com sucesso!", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      });
   }
 
   return (
     <NoteContext.Provider
       value={{
         data,
-        note,
-        title,
+
         textareaRef,
         isEditing,
-        annotation,
+
         isVisible,
         changeVisibleState,
         deleteNote,
@@ -192,9 +205,6 @@ export function NoteProvider({ children }: NoteProviderProps) {
         updateNote,
         activeUpdateNote,
         setIsEditing,
-        setTitle,
-        setAnnotation,
-        setNote,
       }}
     >
       {children}

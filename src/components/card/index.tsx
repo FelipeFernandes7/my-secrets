@@ -2,9 +2,9 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import * as S from "./styles";
-import { useContext } from "react";
-import { NoteContext } from "../../context/NoteContext";
+
 import { Link } from "react-router-dom";
+import { useNote } from "../../hooks";
 
 type CardProps = {
   id: string;
@@ -13,7 +13,7 @@ type CardProps = {
   title: string;
 };
 export function Card({ week, hours, title, id }: CardProps) {
-  const { deleteNote } = useContext(NoteContext);
+  const { deleteNote } = useNote();
   const styledIcon = {
     cursor: "pointer",
     color: "rgb(220 38 38)",
