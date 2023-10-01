@@ -28,10 +28,8 @@ type NoteContextType = {
   addNote: (note: Notes) => void;
   updateNote: (id: string, newAnnotation?: string, title?: string) => void;
   deleteNote: (id: string) => void;
-  changeTextarea: () => void;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   changeVisibleState: () => void;
-  activeUpdateNote: () => void;
 };
 
 type Feeling = {
@@ -100,28 +98,6 @@ export function NoteProvider({ children }: NoteProviderProps) {
     }
   }
 
-  function changeTextarea() {
-    const textarea = textareaRef.current;
-    if (textarea !== null) {
-      textarea.style.width = "100%";
-      textarea.style.height = "auto";
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    }
-  }
-
-  useEffect(() => {
-    changeTextarea();
-  }, []);
-
-  function activeUpdateNote() {
-    setIsEditing((t) => !t);
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-      }
-    }, 10);
-  }
-
   async function addNote(note: Notes) {
     if (!user) return;
     const noteRef = ref(database, `notes/${user.uid}/notes`);
@@ -149,14 +125,25 @@ export function NoteProvider({ children }: NoteProviderProps) {
   async function deleteNote(id: string) {
     if (!user) return;
     const todoPath = ref(database, `notes/${user.uid}/notes/${id}`);
-    await remove(todoPath);
-    toast.success("Nota excluída com sucesso!", {
-      position: "top-center",
-      style: {
-        background: "#232323",
-        color: "#fff",
-      },
-    });
+    await remove(todoPath)
+      .then(() => {
+        toast.success("Nota excluída com sucesso!", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      });
   }
 
   async function updateNote(
@@ -198,9 +185,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
         changeVisibleState,
         deleteNote,
         addNote,
-        changeTextarea,
         updateNote,
-        activeUpdateNote,
         setIsEditing,
       }}
     >

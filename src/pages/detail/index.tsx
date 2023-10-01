@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Notes } from "../../context/NoteContext";
@@ -10,29 +10,48 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { capitalizeFirstLetter, getRandomColor } from "../../helpers";
 import { database } from "../../services";
-import { Textarea } from "../../components/textarea";
 import { onValue, ref } from "firebase/database";
 import { useAuth, useNote } from "../../hooks";
 import { translation } from "../../helpers/translation";
 
 export function NoteDetail() {
+  const { isEditing, setIsEditing, updateNote } = useNote();
+  const navigate = useNavigate();
+  const [note, setNote] = useState<Notes>();
   const { id } = useParams();
   const noteId = String(id);
-  const navigate = useNavigate();
-  const { isEditing, textareaRef, setIsEditing, activeUpdateNote, updateNote } =
-    useNote();
   const { user } = useAuth();
-  const [note, setNote] = useState<Notes>();
 
-  const styledButtonEditing = {
-    background: isEditing ? "#fff" : "rgb(15 23 42)",
-    color: isEditing ? "rgb(15 23 42)" : "#fff",
-  };
-
-  function toGoBack() {
+  function back() {
     setIsEditing(false);
     navigate("/");
   }
+
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  function autoResize() {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+  }
+
+  useEffect(() => {
+    autoResize();
+  }, [note?.annotation]);
+
+  function activeUpdateNote() {
+    setIsEditing((t) => !t);
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.selectionStart = textareaRef.current.value.length;
+        textareaRef.current.selectionEnd = textareaRef.current.value.length;
+      }
+    }, 10);
+  }
+
   useEffect(() => {
     if (!noteId) return;
 
@@ -76,67 +95,66 @@ export function NoteDetail() {
   const randomColor = getRandomColor();
 
   return (
-    <S.DetailContainer>
-      <S.ActionContainer>
-        <button onClick={toGoBack}>
+    <S.DetailWrapper>
+      <S.ActionBox>
+        <S.Action onClick={back}>
           <BiLeftArrowAlt />
-        </button>
-        <button style={styledButtonEditing} onClick={activeUpdateNote}>
+        </S.Action>
+        <S.Action
+          style={{
+            background: isEditing ? "#fff" : "rgb(15 23 42)",
+            color: isEditing ? "rgb(15 23 42)" : "#fff",
+          }}
+          onClick={() => activeUpdateNote()}
+        >
           <FaRegEdit />
-        </button>
-      </S.ActionContainer>
-      <S.NoteContainer>
-        <Textarea
+        </S.Action>
+      </S.ActionBox>
+      {note.created && (
+        <S.AnnotationDate>
+          {format(new Date(note.created), "PP", {
+            locale: ptBR,
+          })}
+        </S.AnnotationDate>
+      )}
+      <S.Form>
+        <S.AnnotationTitle
           disabled={!isEditing}
           onChange={onChangeTitle}
           value={capitalizeFirstLetter(note ? note.title : "")}
         />
-        <div>
-          <span>
-            {note?.created &&
-              format(new Date(note.created), "PP", {
-                locale: ptBR,
-              })}
-          </span>
-        </div>
-      </S.NoteContainer>
-      <S.NotePad>
-        <textarea
-          style={{
-            height: note.annotation.length < 100 ? "auto" : "500px",
-            overflowY: note.annotation.length >= 500 ? "auto" : "hidden",
-          }}
+        <S.Textarea
+          style={{ fontStyle: isEditing ? "italic" : "normal" }}
+          id="annotation"
           ref={textareaRef}
+          onInput={autoResize}
           disabled={!isEditing}
           onChange={onChangeAnnotation}
-          id="annotation"
           value={note?.annotation}
         />
-      </S.NotePad>
-      <S.containerButtonRegister>
         {isEditing && (
-          <button
-            onClick={() => updateNote(noteId, note?.annotation, note?.title)}
-          >
-            Atualizar Registro
-          </button>
+          <S.Wrapper>
+            <S.ButtonSubmit
+              type="button"
+              onClick={() => updateNote(noteId, note.annotation, note.title)}
+            >
+              Salvar Alteração
+            </S.ButtonSubmit>
+          </S.Wrapper>
         )}
-      </S.containerButtonRegister>
-      <S.FeelingSection>
-        <h1>
-          Sentimento:
-          {translation(note).map((key) => (
-            <span style={{ background: randomColor }} key={key}>
-              {key}
-            </span>
-          ))}
-        </h1>
-      </S.FeelingSection>
-      {isEditing && (
-        <S.Warning>
-          Agora você poderá atualizar o título e a anotação!
-        </S.Warning>
-      )}
-    </S.DetailContainer>
+        {note.feeling && (
+          <S.FeelingWrapper>
+            <h1>
+              Sentimento:
+              {translation(note).map((key) => (
+                <span style={{ background: randomColor }} key={key}>
+                  {key}
+                </span>
+              ))}
+            </h1>
+          </S.FeelingWrapper>
+        )}
+      </S.Form>
+    </S.DetailWrapper>
   );
 }

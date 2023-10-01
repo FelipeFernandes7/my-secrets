@@ -60,7 +60,7 @@ export const FormContent = styled.div`
     margin-top: 1.5rem;
     background-color: rgb(2 6 23);
     color: #fff;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     width: 100%;
     height: 3rem;
     padding: 10px;
@@ -79,7 +79,7 @@ export const FormContent = styled.div`
     margin-top: 1.5rem;
     background-color: rgb(2 6 23);
     color: #fff;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     width: 100%;
     height: 3rem;
     padding: 10px;
@@ -133,7 +133,7 @@ export const Button = styled.button`
   width: 30%;
   height: 2.5rem;
   border: none;
-  border-radius: 1.5rem;
+  border-radius: 0.5rem;
   font-size: 0.95rem;
   font-weight: 400;
   background-color: rgb(37 99 235);
