@@ -10,7 +10,8 @@ import {
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { parseUser } from "../helpers/utils";
-import { auth } from "../services";
+import { auth, database } from "../services";
+import { onValue, ref, set } from "firebase/database";
 
 type AuthProps = {
   children: ReactNode;
@@ -31,7 +32,8 @@ type AuthContextType = {
   signUpWithEmailAndPassword: (
     email: string,
     password: string,
-    displayName: string
+    displayName: string,
+    avatar?: string
   ) => Promise<void>;
   logOut: () => Promise<void>;
 };
@@ -48,7 +50,7 @@ export function AuthProvider({ children }: AuthProps) {
       if (user) {
         const { displayName, photoURL, uid } = user;
         setUser({
-          name: displayName,
+          name: displayName ?? "unknown",
           avatar: photoURL,
           uid,
         });
@@ -82,9 +84,16 @@ export function AuthProvider({ children }: AuthProps) {
   async function signUpWithEmailAndPassword(
     email: string,
     password: string,
-    displayName: string
+    displayName: string,
+    avatar?: string
   ) {
     const user = await createUserWithEmailAndPassword(auth, email, password);
+    const userRef = ref(database, `users/${user.user.uid}`);
+    await set(userRef, {
+      name: displayName,
+      avatar: avatar || null,
+      uid: user.user.uid,
+    });
     const parsedUser = {
       name: displayName,
       avatar: null,
@@ -97,6 +106,25 @@ export function AuthProvider({ children }: AuthProps) {
     await signOut(auth);
     setUser(null);
   };
+
+  useEffect(() => {
+    if (!user) return;
+
+    const noteRef = ref(database, `users/${user?.uid}`);
+
+    const getData = onValue(noteRef, (snapshot) => {
+      const data: User = {
+        uid: user.uid,
+        avatar: snapshot.val()?.avatar,
+        name: snapshot.val()?.name,
+      };
+      setUser(data);
+    });
+
+    return () => {
+      getData();
+    };
+  }, [user?.uid]);
 
   return (
     <AuthContext.Provider

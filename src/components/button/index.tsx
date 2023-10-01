@@ -18,7 +18,11 @@ export function Button({
   ...rest
 }: ButtonProps) {
   return (
-    <S.ButtonStyled icon={icon} bgColor={bgColor} color={color} {...rest}>
+    <S.ButtonStyled
+      icon={icon}
+      style={{ color, backgroundColor: bgColor }}
+      {...rest}
+    >
       {isLoading ? <Spinner style={{ width: 80, height: 80 }} /> : label}
     </S.ButtonStyled>
   );

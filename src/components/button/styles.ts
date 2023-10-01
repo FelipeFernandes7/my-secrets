@@ -11,8 +11,8 @@ export const ButtonStyled = styled.button<{
   font-size: 0.875rem;
   font-family: "Montserrat";
   font-weight: 700;
-  color: ${props => (props.color ? props.color : "#fff")};
-  background: ${(props) => (props.bgColor ? props.bgColor : "#2563eb")};
+  color: #fff;
+  background: #2563eb;
   border: none;
   width: 100%;
   height: 3rem;
