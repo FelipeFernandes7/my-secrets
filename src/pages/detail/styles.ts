@@ -68,12 +68,12 @@ export const Action = styled.button`
   font-size: 1.5rem;
   color: #fff;
   border: none;
-  background: rgb(15 23 42);
+  background: #232323;
   border-radius: 100%;
   cursor: pointer;
   transition: all linear 0.3s;
   &:hover {
-    background-color: rgb(30 41 59);
+    background: #3d3d3d;
   }
 `;
 
@@ -95,8 +95,8 @@ export const ButtonSubmit = styled.button`
   justify-content: center;
   width: 100%;
   height: 3rem;
-  background: #fff;
-  color: rgb(37 99 235);
+  background: #7158e2;
+  color: #fff;
   font-size: 1rem;
   font-weight: 700;
   border: none;

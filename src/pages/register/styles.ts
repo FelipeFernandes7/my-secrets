@@ -38,8 +38,8 @@ export const FormContent = styled.div`
     text-align: center;
     margin-top: 1.5rem;
     height: 3rem;
-    background: #fff;
-    color: rgb(37 99 235);
+    background: #7158e2;
+    color: #fff;
     font-weight: 700;
     font-size: 0.95rem;
     border: none;
@@ -59,13 +59,13 @@ export const ContainerButtonReturn = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 4rem;
-    height: 2rem;
-    border-radius: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
     border: none;
     cursor: pointer;
     font-weight: 700;
-    background: #fff;
-    color: rgb(37 99 235);
+    background: #7158e2;
+    color: #ffff;
   }
 `;

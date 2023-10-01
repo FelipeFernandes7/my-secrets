@@ -112,8 +112,8 @@ export function NoteDetail() {
         </S.Action>
         <S.Action
           style={{
-            background: isEditing ? "#fff" : "rgb(15 23 42)",
-            color: isEditing ? "rgb(15 23 42)" : "#fff",
+            background: isEditing ? "#7158e2" : "#232323",
+            color: "#fff",
           }}
           onClick={() => activeUpdateNote()}
         >
