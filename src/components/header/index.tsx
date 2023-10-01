@@ -3,7 +3,7 @@ import { profile } from "../../constants/header";
 import { useAuth } from "../../hooks";
 import { Action, HeaderContainer, HeaderContent, Profile } from "./styles";
 import { BiLogIn } from "react-icons/bi";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { FiSettings } from "react-icons/fi";
 
 export function Header() {
   const { loadingAuth, user } = useAuth();
@@ -17,17 +17,13 @@ export function Header() {
       <HeaderContent>
         <Profile>
           <a href="/">
-            <img src={profile.img} alt="ig.news" />
+            <img src={user?.avatar || profile.img} alt="ig.news" />
           </a>
           <span>{user?.name}</span>
         </Profile>
         <Action>
           <button>
-            <MdOutlineFavoriteBorder
-              size={24}
-              color={"#fff"}
-              cursor={"pointer"}
-            />
+            <FiSettings size={24} color={"#fff"} cursor={"pointer"} />
           </button>
           {!loadingAuth && signed && (
             <button onClick={handleLogin}>
