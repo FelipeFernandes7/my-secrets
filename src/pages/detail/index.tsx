@@ -13,6 +13,7 @@ import { database } from "../../services";
 import { onValue, ref } from "firebase/database";
 import { useAuth, useNote } from "../../hooks";
 import { translation } from "../../helpers/translation";
+import { Spinner } from "../../components/spinner";
 
 export function NoteDetail() {
   const { isEditing, setIsEditing, updateNote } = useNote();
@@ -75,7 +76,16 @@ export function NoteDetail() {
   }, [noteId]);
 
   if (!note) {
-    return <div>Carregando...</div>;
+    return (
+      <S.Loading>
+        <Spinner
+          style={{
+            width: 200,
+            height: 200,
+          }}
+        />
+      </S.Loading>
+    );
   }
 
   function onChangeTitle(e: ChangeEvent<HTMLTextAreaElement>) {
