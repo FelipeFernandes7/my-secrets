@@ -52,8 +52,8 @@ export function AuthProvider({ children }: AuthProps) {
           avatar: photoURL,
           uid,
         });
-        setLoadingAuth(false);
       }
+      setLoadingAuth(false);
     });
     return () => unsubscribe();
   }, []);
