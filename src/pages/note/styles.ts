@@ -37,7 +37,7 @@ export const Form = styled.form`
   height: 100%;
   border-radius: 1.5rem;
   transition: all linear 0.3s;
-  background-color: rgb(15 23 42);
+  background: #181818;
   @media screen and (max-width: 768px) {
     border-radius: 2rem 2rem 0 0;
   }
@@ -58,15 +58,14 @@ export const FormContent = styled.div`
   justify-content: center;
   input {
     margin-top: 1.5rem;
-    background-color: rgb(2 6 23);
+    background:#141414;
     color: #fff;
     border-radius: 0.5rem;
     width: 100%;
     height: 3rem;
     padding: 10px;
     font-size: 16px;
-    background-color: rgb(2 6 23);
-    border: 1px solid rgb(30 41 59);
+    border: 1px solid #3d3d3d;
     transition: height 0.3s ease;
     font-family: "Montserrat";
     overflow-y: hidden;
@@ -77,15 +76,15 @@ export const FormContent = styled.div`
   }
   textarea {
     margin-top: 1.5rem;
-    background-color: rgb(2 6 23);
+    background:#141414;
     color: #fff;
     border-radius: 0.5rem;
     width: 100%;
     height: 3rem;
     padding: 10px;
     font-size: 16px;
-    background-color: rgb(2 6 23);
-    border: 1px solid rgb(30 41 59);
+    background:#141414;
+    border: 1px solid #3d3d3d;
     transition: height 0.3s ease;
     font-family: "Montserrat";
     overflow-y: hidden;
@@ -109,7 +108,7 @@ export const Section = styled.section`
     margin-top: 1rem;
     color: #ffff;
     text-decoration: none;
-    background-color: rgb(2 6 23);
+    background: rgb(2 6 23);
     border-radius: 0.5rem;
     padding: 0.5rem;
     transition: all linear 0.3s;
@@ -136,7 +135,7 @@ export const Button = styled.button`
   border-radius: 0.5rem;
   font-size: 0.95rem;
   font-weight: 400;
-  background-color: rgb(37 99 235);
+  background: #7158e2;
   margin-bottom: 0.5rem;
   cursor: pointer;
   color: #ffff;

@@ -12,18 +12,18 @@ export const ButtonStyled = styled.button<{
   font-family: "Montserrat";
   font-weight: 700;
   color: #fff;
-  background: #2563eb;
+  background: #7d5fff;
   border: none;
   width: 100%;
   height: 3rem;
   border-radius: 0.5rem;
   transition: all linear 0.3s;
-  &:disabled{
-   background: transparent;
-   border: 1px solid #fff;
-   cursor: not-allowed;
-   color: #fff;
-    &:active{
+  &:disabled {
+    background: transparent;
+    border: 1px solid #fff;
+    cursor: not-allowed;
+    color: #fff;
+    &:active {
       transform: none;
     }
   }

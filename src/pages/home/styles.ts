@@ -7,6 +7,8 @@ export const HomeContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 `;
 
 export const AddBtn = styled.button`
@@ -15,7 +17,7 @@ export const AddBtn = styled.button`
   align-items: center;
   justify-content: center;
   bottom: 2rem;
-  background-color: rgb(37 99 235);
+  background: #7d5fff;
   border: none;
   height: 3.5rem;
   width: 3.5rem;
@@ -23,17 +25,16 @@ export const AddBtn = styled.button`
   cursor: pointer;
   transition: all linear 0.3s;
   &:hover {
-    background-color: rgb(29 78 216);
+    background: #7158e2;
   }
 `;
 
 export const StyledHomeContent = styled.div`
-  display: flex;
   width: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  display: grid;
+  gap:1rem;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  @media screen and (max-width: 768px) {
+    gap: 0;
+  }
 `;

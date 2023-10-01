@@ -8,7 +8,7 @@ export const GlobalStyles = createGlobalStyle`
 }
 body{
   font-family: 'Montserrat';
-  background-color: rgb(2 6 23);
+  background: #131313;
   color: #fff;
   transition: all linear 0.3s ease;
   button{

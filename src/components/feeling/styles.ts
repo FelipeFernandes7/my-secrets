@@ -5,7 +5,7 @@ export const FeelingBtn = styled.button`
   color: #fff;
   font-size: 0.95rem;
   height: 3rem;
-  border: 2px solid rgb(30 41 59);
+  border: 2px solid #3d3d3d;
   background: transparent;
   border-radius: 1rem;
   cursor: pointer;

@@ -94,8 +94,8 @@ export function Login() {
               error={errors.password}
             />
             <Button
-              bgColor="#dbeafe"
-              color="#000"
+              bgColor="#7d5fff"
+              color="#fff"
               isLoading={isLoading}
               type="submit"
               label={"Entrar"}

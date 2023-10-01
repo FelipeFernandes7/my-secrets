@@ -8,13 +8,14 @@ export const CardContainer = styled.div`
   height: 12em;
   border-radius: 2rem;
   cursor: pointer;
-  background-color: rgb(15 23 42);
+  background: #181818;
   margin-bottom: 1rem;
   transition: all linear 0.3s;
   &:active {
     transform: scale(0.95);
   }
 `;
+
 export const Section = styled.div`
   width: 100%;
   display: flex;

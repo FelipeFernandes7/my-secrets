@@ -30,7 +30,7 @@ export const Box = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #111827;
+  background: #7d5fff;
   gap: 1rem;
   @media screen and (max-width: 768px) {
     display: none;
@@ -67,8 +67,8 @@ export const IptContainer = styled.div`
   max-width: 450px;
   button {
     margin-top: 2rem;
-    background: #fff;
-    color: rgb(37 99 235);
+    background: #7d5fff;
+    color: #fff;
   }
 
   input[type="password"] {
@@ -98,7 +98,7 @@ export const Form = styled.form`
     display: flex;
     gap: 0.5rem;
     a {
-      color: rgb(29 78 216);
+      color: #7d5fff;
     }
   }
 `;
