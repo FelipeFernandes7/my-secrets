@@ -30,11 +30,11 @@ export const AddBtn = styled.button`
 
 export const StyledHomeContent = styled.div`
   width: 100%;
-  display: grid;
+  display: flex;
   gap:1rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  flex-wrap: wrap;
   @media screen and (max-width: 768px) {
     gap: 0;
   }
