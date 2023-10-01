@@ -55,7 +55,18 @@ export function Register() {
 
   async function onSubmit(formData: FormData) {
     setIsLoading(true);
-    const { email, password, name } = formData;
+    const { email, password, name, confPassword } = formData;
+    if (password !== confPassword) {
+      toast.error("As senhas não conferem", {
+        style: {
+          backgroundColor: "#232323",
+          color: "#fff",
+        },
+        position: "top-center",
+      });
+      setIsLoading(false);
+      return;
+    }
     await signUpWithEmailAndPassword(email, password, name)
       .then(() => {
         toast.success("Usuário cadastrado com sucesso", {
