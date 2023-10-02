@@ -55,7 +55,7 @@ export const ContainerButtonReturn = styled.div`
   display: flex;
   justify-content: flex-start;
   padding-left: 1.5rem;
-  button{
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,7 +65,8 @@ export const ContainerButtonReturn = styled.div`
     border: none;
     cursor: pointer;
     font-weight: 700;
-    background: #7158e2;
+    background-color: #6e72fc;
+    background-image: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
     color: #ffff;
   }
 `;

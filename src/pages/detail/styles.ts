@@ -95,12 +95,13 @@ export const ButtonSubmit = styled.button`
   justify-content: center;
   width: 100%;
   height: 3rem;
-  background: #7158e2;
+  background-color: #6e72fc;
+  background-image: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
   color: #fff;
   font-size: 1rem;
   font-weight: 700;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.95rem;
   cursor: pointer;
 `;
 

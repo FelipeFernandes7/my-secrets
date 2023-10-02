@@ -30,6 +30,16 @@ export function NoteDetail() {
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const enableBgToEdit = isEditing
+    ? {
+        backgroundColor: "#6e72fc",
+        backgroundImage: " linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)",
+        color: "#fff",
+      }
+    : {
+        background: "#232323",
+        color: "#fff",
+      };
   function autoResize() {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -110,13 +120,7 @@ export function NoteDetail() {
         <S.Action onClick={back}>
           <BiLeftArrowAlt />
         </S.Action>
-        <S.Action
-          style={{
-            background: isEditing ? "#7158e2" : "#232323",
-            color: "#fff",
-          }}
-          onClick={() => activeUpdateNote()}
-        >
+        <S.Action style={enableBgToEdit} onClick={() => activeUpdateNote()}>
           <FaRegEdit />
         </S.Action>
       </S.ActionBox>

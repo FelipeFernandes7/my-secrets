@@ -15,16 +15,14 @@ export const AddBtn = styled.button`
   align-items: center;
   justify-content: center;
   bottom: 2rem;
-  background: #7d5fff;
+  background-color: #6e72fc;
+  background-image: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
   border: none;
   height: 3.5rem;
   width: 3.5rem;
   border-radius: 100%;
   cursor: pointer;
   transition: all linear 0.3s;
-  &:hover {
-    background: #7158e2;
-  }
 `;
 
 export const StyledHomeContent = styled.div`

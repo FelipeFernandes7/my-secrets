@@ -67,7 +67,8 @@ export const IptContainer = styled.div`
   max-width: 450px;
   button {
     margin-top: 2rem;
-    background: #7d5fff;
+    background-color: #6e72fc;
+    background-image: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
     color: #fff;
   }
 
