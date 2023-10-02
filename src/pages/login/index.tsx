@@ -10,10 +10,12 @@ import { BsShieldLockFill } from "react-icons/bs";
 import * as Chakra from "@chakra-ui/react";
 
 import toast from "react-hot-toast";
+import { useMediaQuery } from "@chakra-ui/react";
 
 export function Login() {
   const { isVisible, changeVisibleState } = useNote();
   const [isLoading, setIsLoading] = useState(false);
+  const [isSmallerThen860] = useMediaQuery("(max-width: 768px)");
   const { signIn, logOut } = useAuth();
 
   const schema = z.object({
@@ -68,10 +70,11 @@ export function Login() {
 
   return (
     <Chakra.Flex
-      h={"100vh"}
       flexDirection={{ md: "row", base: "column" }}
-      w={"100%"}
       overflow={"hidden"}
+      h={"100vh"}
+      w={"100%"}
+      transition={"all linear 0.3s"}
     >
       <Chakra.Box
         as="form"
@@ -85,6 +88,29 @@ export function Login() {
         pr={"1.5rem"}
         pl={"1.5rem"}
       >
+        {isSmallerThen860 && (
+          <Chakra.Flex flexDirection={"column"} w={"100%"}>
+            <Chakra.Text
+              textAlign={"center"}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              whiteSpace="nowrap"
+              fontSize={"2.5rem"}
+              gap={".5rem"}
+              fontWeight={700}
+              backgroundColor={"#6e72fc"}
+              backgroundImage="linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"
+              css={{
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              My Secrets
+              <Chakra.Icon as={BsShieldLockFill} />
+            </Chakra.Text>
+          </Chakra.Flex>
+        )}
         <Chakra.Text fontSize={"2rem"} fontWeight={"bold"}>
           <h1>Login</h1>
         </Chakra.Text>
