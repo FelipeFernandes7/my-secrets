@@ -23,11 +23,15 @@ export function Header() {
         alignItems={"center"}
         flexDirection={"row"}
         h={"5rem"}
-        justifyContent={"flex-end"}
+        justifyContent={"space-between"}
         w={"100%"}
         gap={"0.5rem"}
+        pl={"1.5rem"}
+        pr={".5rem"}
       >
+        <Chakra.Text fontSize={{ md: "1.5rem", base: "1rem" }}><Link to={"/"}>⌘</Link></Chakra.Text>
         <Chakra.Text
+          w={{ md: "auto", base: "100%" }}
           textAlign={"center"}
           display="flex"
           justifyContent="center"
