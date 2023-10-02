@@ -1,49 +1,42 @@
 import { styled } from "styled-components";
 
 export const HeaderContainer = styled.header`
-  display: flex;
   width: 100%;
+  display: flex;
   align-items: center;
-
-  justify-content: center;
+  justify-content: space-around;
   height: 5rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  background: #181818;
+  margin-bottom: 1.5rem;
 `;
 
 export const HeaderContent = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  height: 4rem;
 `;
 
-export const Profile = styled.div`
-  transition: all linear 0.3s;
+export const Wrapper = styled.div`
   width: 100%;
-  font-size: 1.5rem;
-  font-weight: 100;
   display: flex;
-  gap: 1rem;
   align-items: center;
-  img {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
+  justify-content: center;
+  button {
     cursor: pointer;
-  }
-  @media screen and (max-width: 768px) {
-    transition: all linear 0.3s;
-    font-size: 0.95rem;
+    background: transparent;
+    width: auto;
   }
 `;
 
-export const Action = styled.div`
+export const Name = styled.span`
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  button {
-    background: transparent;
-    border: none;
-  }
+  white-space: nowrap;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
 `;

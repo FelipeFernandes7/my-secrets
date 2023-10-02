@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { profile } from "../../constants/header";
 import { useAuth } from "../../hooks";
-import { Action, HeaderContainer, HeaderContent, Profile } from "./styles";
 import { BiLogIn } from "react-icons/bi";
-import { FiSettings } from "react-icons/fi";
+import { Settings } from "../settings";
+import { Button } from "@chakra-ui/react";
+import * as S from "./styles";
 
 export function Header() {
   const { loadingAuth, user } = useAuth();
@@ -13,25 +13,26 @@ export function Header() {
     navigate("/login");
   }
   return (
-    <HeaderContainer>
-      <HeaderContent>
-        <Profile>
-          <a href="/">
-            <img src={user?.avatar || profile.img} alt="ig.news" />
-          </a>
-          <span>{user?.name}</span>
-        </Profile>
-        <Action>
-          <button>
-            <FiSettings size={24} color={"#fff"} cursor={"pointer"} />
-          </button>
+    <S.HeaderContainer>
+      <S.HeaderContent>
+        <S.Wrapper>
+          <Settings />
+        </S.Wrapper>
+        <S.Name>{user?.name ?? "unknown"}</S.Name>
+        <S.Wrapper>
           {!loadingAuth && signed && (
-            <button onClick={handleLogin}>
+            <Button
+              bg={"transparent"}
+              color={"#fff"}
+              width={"100%"}
+              _hover={{ bg: "#7158e2" }}
+              onClick={handleLogin}
+            >
               <BiLogIn size={24} color={"#fff"} cursor={"pointer"} />
-            </button>
+            </Button>
           )}
-        </Action>
-      </HeaderContent>
-    </HeaderContainer>
+        </S.Wrapper>
+      </S.HeaderContent>
+    </S.HeaderContainer>
   );
 }
