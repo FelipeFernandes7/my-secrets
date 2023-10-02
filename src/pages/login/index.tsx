@@ -71,6 +71,7 @@ export function Login() {
       h={"100vh"}
       flexDirection={{ md: "row", base: "column" }}
       w={"100%"}
+      overflow={"hidden"}
     >
       <Chakra.Box
         as="form"
