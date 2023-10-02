@@ -6,7 +6,6 @@ export const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-around;
   height: 5rem;
-  background: #181818;
   margin-bottom: 1.5rem;
 `;
 
@@ -38,5 +37,8 @@ export const Name = styled.span`
   white-space: nowrap;
   font-size: 0.95rem;
   font-weight: 700;
-  color: #fff;
+  background-color: #6e72fc;
+  background-image: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;

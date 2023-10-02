@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks";
 import { BiLogIn } from "react-icons/bi";
 import { Settings } from "../settings";
@@ -18,7 +18,9 @@ export function Header() {
         <S.Wrapper>
           <Settings />
         </S.Wrapper>
-        <S.Name>{user?.name ?? "unknown"}</S.Name>
+        <S.Name>
+          <Link to={"/"}>{user?.name ?? "unknown"}</Link>
+        </S.Name>
         <S.Wrapper>
           {!loadingAuth && signed && (
             <Button
