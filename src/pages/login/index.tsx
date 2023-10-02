@@ -76,6 +76,30 @@ export function Login() {
       w={"100%"}
       transition={"all linear 0.3s"}
     >
+      {isSmallerThen860 && (
+        <Chakra.Flex flexDirection={"column"} w={"100%"}>
+          <Chakra.Text
+            mt={"1.5rem"}
+            textAlign={"center"}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            whiteSpace="nowrap"
+            fontSize={"2.5rem"}
+            gap={".5rem"}
+            fontWeight={700}
+            backgroundColor={"#6e72fc"}
+            backgroundImage="linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"
+            css={{
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            My Secrets
+            <Chakra.Icon as={BsShieldLockFill} />
+          </Chakra.Text>
+        </Chakra.Flex>
+      )}
       <Chakra.Box
         as="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -88,29 +112,6 @@ export function Login() {
         pr={"1.5rem"}
         pl={"1.5rem"}
       >
-        {isSmallerThen860 && (
-          <Chakra.Flex flexDirection={"column"} w={"100%"}>
-            <Chakra.Text
-              textAlign={"center"}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              whiteSpace="nowrap"
-              fontSize={"2.5rem"}
-              gap={".5rem"}
-              fontWeight={700}
-              backgroundColor={"#6e72fc"}
-              backgroundImage="linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"
-              css={{
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              My Secrets
-              <Chakra.Icon as={BsShieldLockFill} />
-            </Chakra.Text>
-          </Chakra.Flex>
-        )}
         <Chakra.Text fontSize={"2rem"} fontWeight={"bold"}>
           <h1>Login</h1>
         </Chakra.Text>
