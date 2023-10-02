@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Input } from "../../components/input";
-import { Spinner } from "../../components/spinner";
 import { useAuth, useNote } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +9,7 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { BsArrowLeftShort } from "react-icons/bs";
 
-import * as S from "./styles";
+import * as Chakra from "@chakra-ui/react";
 
 interface ConfPasswordVisible {
   type: "password" | "text";
@@ -111,15 +110,60 @@ export function Register() {
   };
 
   return (
-    <S.Container>
-      <S.ContainerButtonReturn>
-        <button onClick={handleNavigate}>
-          <BsArrowLeftShort size={30} />
-        </button>
-      </S.ContainerButtonReturn>
-      <S.Form onSubmit={handleSubmit(onSubmit)}>
-        <h1>Cadastro</h1>
-        <S.FormContent>
+    <Chakra.Flex
+      w={"100%"}
+      h={"100vh"}
+      flexDirection={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      position={"relative"}
+    >
+      <Chakra.Flex
+        w={"100%"}
+        position={"fixed"}
+        top={"1.5rem"}
+        justifyContent={"flex-start"}
+        pl={"1.5rem"}
+      >
+        <Chakra.Button
+          onClick={handleNavigate}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          w={"3rem"}
+          h={"3rem"}
+          borderRadius={"50%"}
+          border={"none"}
+          cursor={"pointer"}
+          fontWeight={"bold"}
+          backgroundColor={"#6e72fc"}
+          backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
+          color={"#fff"}
+          fontSize={"1.5rem"}
+        >
+          <Chakra.Icon as={BsArrowLeftShort} />
+        </Chakra.Button>
+      </Chakra.Flex>
+      <Chakra.Box
+        as="form"
+        onSubmit={handleSubmit(onSubmit)}
+        w={"100%"}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        pr={"1.5rem"}
+        pl={"1.5rem"}
+      >
+        <Chakra.Text fontSize={"2rem"} fontWeight={"bold"}>
+          Cadastro
+        </Chakra.Text>
+        <Chakra.Flex
+          w={"100%"}
+          maxW={"450px"}
+          flexDirection={"column"}
+          gap={"1rem"}
+        >
           <Input
             name="name"
             type={"user"}
@@ -154,15 +198,31 @@ export function Register() {
             register={register}
             error={errors.confPassword}
           />
-          <button type="submit">
-            {isLoading ? (
-              <Spinner style={{ width: 80, height: 80 }} />
-            ) : (
-              "Salvar"
-            )}
-          </button>
-        </S.FormContent>
-      </S.Form>
-    </S.Container>
+          <Chakra.Button
+            type="submit"
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            w={"100%"}
+            mt={"1.5rem"}
+            h={"3rem"}
+            cursor={"pointer"}
+            borderRadius={"0.5rem"}
+            backgroundColor={"#6e72fc"}
+            backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
+            color={"#fff"}
+            _hover={{
+              hover: "none",
+            }}
+            _disabled={{
+              opacity: "0.5",
+              cursor: "not-allowed",
+            }}
+          >
+            {isLoading ? <Chakra.Spinner color="#fff" /> : "Salvar"}
+          </Chakra.Button>
+        </Chakra.Flex>
+      </Chakra.Box>
+    </Chakra.Flex>
   );
 }

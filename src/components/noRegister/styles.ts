@@ -8,6 +8,7 @@ export const StyledNoRegister = styled.div`
   width: 100%;
   height: 75vh;
   gap: 0.5em;
-  color: #334155;
+  color: #ad1deb;
+  opacity: 0.3;
 `;
 
