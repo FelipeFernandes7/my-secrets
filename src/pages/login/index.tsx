@@ -102,6 +102,7 @@ export function Login() {
       )}
       <Chakra.Box
         as="form"
+        mt={{base:"-5rem", md: "0"}}
         onSubmit={handleSubmit(onSubmit)}
         h={"100vh"}
         w={{ md: "50%", base: "100%" }}
