@@ -79,13 +79,13 @@ export function Note() {
         mt={"1.5rem"}
         display={"flex"}
         flexDirection={"column"}
-        justifyContent={"center"}
         alignItems={"center"}
         background={"#232323"}
         borderRadius={{ base: "2rem 2rem 0 0", md: "2rem 2rem 0 0" }}
       >
         <Chakra.Text
           mb={"1.5rem"}
+          mt={"1.5rem"}
           w={"100%"}
           textAlign={"center"}
           fontWeight={"bold"}
@@ -163,32 +163,40 @@ export function Note() {
             <AllFeelings />
           </Chakra.Flex>
         </Chakra.Flex>
-        <Chakra.Button
-          isDisabled={
-            !annotation.trim().length || !title.trim().length ? true : false
-          }
-          type="submit"
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          w={{ base: "100%", md: "30%" }}
-          mt={"1.5rem"}
-          h={"3rem"}
-          cursor={"pointer"}
-          borderRadius={"0.5rem"}
-          backgroundColor={"#6e72fc"}
-          backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
-          color={"#fff"}
-          _hover={{
-            hover: "none",
-          }}
-          _disabled={{
-            opacity: "0.5",
-            cursor: "not-allowed",
-          }}
+        <Chakra.Flex
+          flexDirection={"column"}
+          justifyContent={"flex-end"}
+          w={"100%"}
+          h={"100%"}
+          mb={"1.5rem"}
         >
-          Enviar
-        </Chakra.Button>
+          <Chakra.Button
+            isDisabled={
+              !annotation.trim().length || !title.trim().length ? true : false
+            }
+            type="submit"
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            w={{ base: "100%", md: "30%" }}
+            mt={"1.5rem"}
+            h={"3rem"}
+            cursor={"pointer"}
+            borderRadius={"0.5rem"}
+            backgroundColor={"#6e72fc"}
+            backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
+            color={"#fff"}
+            _hover={{
+              hover: "none",
+            }}
+            _disabled={{
+              opacity: "0.5",
+              cursor: "not-allowed",
+            }}
+          >
+            Enviar
+          </Chakra.Button>
+        </Chakra.Flex>
       </Chakra.Box>
     </Chakra.Flex>
   );
