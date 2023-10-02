@@ -9,10 +9,12 @@ export const CardContainer = styled.div`
   border-radius: 2rem;
   cursor: pointer;
   background: #181818;
-  margin-bottom: 1rem;
   transition: all linear 0.3s;
   &:active {
     transform: scale(0.95);
+  }
+  @media screen and (max-width: 768px) {
+    margin-bottom: 1rem;
   }
 `;
 
