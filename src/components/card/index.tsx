@@ -45,7 +45,7 @@ export function Card({ week, hours, title, id }: CardProps) {
       onClick={handleCardClick}
       position={"relative"}
       flexDirection={"column"}
-      borderRadius={"0.5rem"}
+      borderRadius={"1rem"}
       cursor={"pointer"}
       bg={"#181818"}
       transition={"all linear 0.3s"}
