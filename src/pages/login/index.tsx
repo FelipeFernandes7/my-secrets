@@ -1,24 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../../components/input";
-import { Title } from "../../components/title";
 
-import * as S from "./styles";
-import { Button } from "../../components/button";
-
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../../services";
-import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth, useNote } from "../../hooks";
 import { z } from "zod";
-interface InputPasswordTypeProps {
-  type: "password" | "text";
-}
+import { BsShieldLockFill } from "react-icons/bs";
+import * as Chakra from "@chakra-ui/react";
+
+import toast from "react-hot-toast";
+import { useMediaQuery } from "@chakra-ui/react";
+
 export function Login() {
-  const [isVisible, setIsVisible] = useState<InputPasswordTypeProps>({
-    type: "password",
-  });
+  const { isVisible, changeVisibleState } = useNote();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSmallerThen860] = useMediaQuery("(max-width: 768px)");
+  const { signIn, logOut } = useAuth();
+
   const schema = z.object({
     email: z
       .string()
@@ -38,58 +37,163 @@ export function Login() {
     mode: "onChange",
   });
   function onSubmit(formData: FormData) {
-    signInWithEmailAndPassword(auth, formData.email, formData.password)
+    setIsLoading(true);
+    const { email, password } = formData;
+    signIn(email, password)
       .then(() => {
-        toast.success("Login efetuado com sucesso");
+        toast.success("Login efetuado com sucesso", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
 
-        navigate("/dashboard", { replace: true });
+        setIsLoading(false);
+        navigate("/");
       })
       .catch((error) => {
-        toast.error("Não foi possível realizar o login :(");
-        console.log(error.message);
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+        setIsLoading(false);
       });
   }
-  function changeVisibleState() {
-    if (isVisible.type === "password") {
-      setIsVisible({ type: "text" });
-    } else {
-      setIsVisible({ type: "password" });
-    }
-  }
+
+  useEffect(() => {
+    logOut();
+  }, []);
 
   return (
-    <S.LoginContainer>
-      <S.Content>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <S.Text>
-            <h1>Login</h1>
-          </S.Text>
-          <S.IptContainer>
-            <Input
-              name="email"
-              label="E-mail"
-              type={"email"}
-              placeholder="Entrar com e-mail..."
-              error={errors.email}
-              register={register}
-            />
-            <Input
-              label="Senha"
-              type={isVisible.type}
-              name="password"
-              placeholder="Entrar com a senha"
-              register={register}
-              handleSeePassword={changeVisibleState}
-              error={errors.password}
-            />
-            <Button type="button" label={"Entrar"} />
-          </S.IptContainer>
-        </form>
-        <S.Box>
-          <Title />
-          <S.IconStyled />
-        </S.Box>
-      </S.Content>
-    </S.LoginContainer>
+    <Chakra.Flex
+      flexDirection={{ md: "row", base: "column" }}
+      overflow={"hidden"}
+      h={"100vh"}
+      w={"100%"}
+      transition={"all linear 0.3s"}
+    >
+      {isSmallerThen860 && (
+        <Chakra.Flex flexDirection={"column"} w={"100%"}>
+          <Chakra.Text
+            mt={"1.5rem"}
+            textAlign={"center"}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            whiteSpace="nowrap"
+            fontSize={"2.5rem"}
+            gap={".5rem"}
+            fontWeight={700}
+            backgroundColor={"#6e72fc"}
+            backgroundImage="linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"
+            css={{
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            My Secrets
+            <Chakra.Icon as={BsShieldLockFill} />
+          </Chakra.Text>
+        </Chakra.Flex>
+      )}
+      <Chakra.Box
+        as="form"
+        mt={{base:"-5rem", md: "0"}}
+        onSubmit={handleSubmit(onSubmit)}
+        h={"100vh"}
+        w={{ md: "50%", base: "100%" }}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        pr={"1.5rem"}
+        pl={"1.5rem"}
+      >
+        <Chakra.Text fontSize={"2rem"} fontWeight={"bold"}>
+          <h1>Login</h1>
+        </Chakra.Text>
+        <Chakra.Flex
+          w={"100%"}
+          maxW={"450px"}
+          flexDirection={"column"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Input
+            name="email"
+            label="E-mail"
+            type={"email"}
+            placeholder="Entrar com e-mail..."
+            error={errors.email}
+            register={register}
+          />
+          <Input
+            label="Senha"
+            type={isVisible.type}
+            name="password"
+            placeholder="Entrar com a senha"
+            register={register}
+            handleSeePassword={changeVisibleState}
+            error={errors.password}
+          />
+          <Chakra.Button
+            type="submit"
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            w={"100%"}
+            mt={"1.5rem"}
+            h={"3rem"}
+            cursor={"pointer"}
+            borderRadius={"0.5rem"}
+            backgroundColor={"#6e72fc"}
+            backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
+            color={"#fff"}
+            _hover={{
+              hover: "none",
+            }}
+            _disabled={{
+              opacity: "0.5",
+              cursor: "not-allowed",
+            }}
+          >
+            {isLoading ? <Chakra.Spinner color="#fff" /> : "entrar"}
+          </Chakra.Button>
+        </Chakra.Flex>
+        <Chakra.Text mt={"1.5rem"} textAlign={"center"}>
+          Ainda não tem uma conta?{" "}
+          <Link style={{ color: "#ad1deb" }} to={"/register"}>
+            Cadastre-se
+          </Link>
+        </Chakra.Text>
+      </Chakra.Box>
+      <Chakra.Flex
+        w={"50%"}
+        height={"100vh"}
+        display={{ base: "none", md: "block" }}
+        justifyContent={"center"}
+        alignItems={"center"}
+        backgroundColor={"#6e72fc"}
+        backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
+      >
+        <Chakra.Flex
+          display={"flex"}
+          h={"100%"}
+          flexDirection={"column"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          textAlign={"center"}
+          fontSize={"4.5rem"}
+          gap={".5rem"}
+        >
+          My Secrets
+          <Chakra.Icon as={BsShieldLockFill} />
+        </Chakra.Flex>
+      </Chakra.Flex>
+    </Chakra.Flex>
   );
 }

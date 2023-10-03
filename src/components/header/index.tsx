@@ -1,30 +1,58 @@
-import { profile } from "../../constants/header";
-import { Action, HeaderContainer, HeaderContent, Profile } from "./styles";
-import { BiBell } from "react-icons/bi";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks";
+import { Settings } from "../settings";
+import * as Chakra from "@chakra-ui/react";
+import { Wrapper } from "./styles";
+
 export function Header() {
+  const { user } = useAuth();
+
   return (
-    <HeaderContainer>
-      <HeaderContent>
-        <Profile>
-          <a href="/">
-            <img src={profile.img} alt="ig.news" />
-          </a>
-          <span>{profile.name}</span>
-        </Profile>
-        <Action>
-          <button>
-            <MdOutlineFavoriteBorder
-              size={24}
-              color={"#fff"}
-              cursor={"pointer"}
-            />
-          </button>
-          <button>
-            <BiBell size={24} color={"#fff"} cursor={"pointer"} />
-          </button>
-        </Action>
-      </HeaderContent>
-    </HeaderContainer>
+    <Chakra.Box
+      as="header"
+      w={"100%"}
+      display={"flex"}
+      height={"5rem"}
+      alignItems={"center"}
+      width={"100%"}
+      mb={"1.5rem"}
+    >
+      <Chakra.Box
+        as="div"
+        display={"flex"}
+        alignItems={"center"}
+        flexDirection={"row"}
+        h={"5rem"}
+        justifyContent={"space-between"}
+        w={"100%"}
+        gap={"0.5rem"}
+        pl={"1.5rem"}
+        pr={".5rem"}
+      >
+        <Chakra.Text fontSize={{ md: "1.5rem", base: "1.3rem" }}><Link to={"/"}>⌘</Link></Chakra.Text>
+        <Chakra.Text
+          w={{ md: "auto", base: "100%" }}
+          textAlign={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          whiteSpace="nowrap"
+          fontSize={{ md: "1.3rem", base: "1rem" }}
+          fontWeight={700}
+          backgroundColor={"#6e72fc"}
+          backgroundImage="linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"
+          css={{
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          <Link to={"/"}>{user?.name ?? "unknown"}</Link>
+        </Chakra.Text>
+
+        <Wrapper>
+          <Settings />
+        </Wrapper>
+      </Chakra.Box>
+    </Chakra.Box>
   );
 }
