@@ -66,8 +66,7 @@ export function NoteProvider({ children }: NoteProviderProps) {
   useEffect(() => {
     if (!user) return;
     const todoRef = ref(database, `notes/${user.uid}`);
-    console.log(user, "user");
-    // Firebase Realtime Event Listener
+    
     onValue(todoRef, (room) => {
       const notesDatabase = room.val();
       const firebaseNotes: Notes[] =

@@ -45,6 +45,7 @@ export const AuthContext = createContext<AuthContextType>(
 export function AuthProvider({ children }: AuthProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
+  const isUserEmpty = user === null;
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -58,7 +59,7 @@ export function AuthProvider({ children }: AuthProps) {
       setLoadingAuth(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, [!isUserEmpty]);
 
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
