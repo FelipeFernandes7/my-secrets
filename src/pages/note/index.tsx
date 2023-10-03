@@ -80,7 +80,7 @@ export function Note() {
         display={"flex"}
         flexDirection={"column"}
         alignItems={"center"}
-        background={"#232323"}
+        background={"#181818"}
         borderRadius={{ base: "2rem 2rem 0 0", md: "2rem 2rem 0 0" }}
       >
         <Chakra.Text
@@ -166,6 +166,7 @@ export function Note() {
         <Chakra.Flex
           flexDirection={"column"}
           justifyContent={"flex-end"}
+          alignItems={"center"}
           w={"100%"}
           h={"100%"}
           mb={"1.5rem"}

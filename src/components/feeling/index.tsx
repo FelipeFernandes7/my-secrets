@@ -16,7 +16,7 @@ export function Feeling({
     <FeelingBtn
       onClick={feelingState}
       style={{
-        background: isFeelingEnabled ? background : "#151515",
+        background: isFeelingEnabled ? background : "transparent",
       }}
       type="button"
     >
