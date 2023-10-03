@@ -6,7 +6,7 @@ export const CardContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 12em;
-  border-radius: 2rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   background: #181818;
   transition: all linear 0.3s;
