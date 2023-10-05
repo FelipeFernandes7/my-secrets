@@ -29,7 +29,9 @@ export function Header() {
         pl={"1.5rem"}
         pr={".5rem"}
       >
-        <Chakra.Text fontSize={{ md: "1.5rem", base: "1.3rem" }}><Link to={"/"}>⌘</Link></Chakra.Text>
+        <Chakra.Text fontSize={{ md: "1.5rem", base: "1.3rem" }}>
+          <Link to={"/"}>⌘</Link>
+        </Chakra.Text>
         <Chakra.Text
           w={{ md: "auto", base: "100%" }}
           textAlign={"center"}

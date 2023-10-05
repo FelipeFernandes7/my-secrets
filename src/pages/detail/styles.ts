@@ -121,15 +121,18 @@ export const FeelingWrapper = styled.div`
   justify-content: flex-start;
   margin-top: 1rem;
   h1 {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    color: #fff;
     font-size: 1rem;
     font-weight: 700;
-    color: #fff;
-    white-space: pre-wrap;
-  }
-  span {
-    padding: 3px;
-    border-radius: 0.5rem;
-    margin-left: 0.3rem;
+    gap: 0.5rem;
+    span {
+      padding: 3px;
+      border-radius: 0.5rem;
+      margin-left: 0.3rem;
+    }
   }
 `;
 

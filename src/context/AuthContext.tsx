@@ -11,7 +11,8 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { parseUser } from "../helpers/utils";
 import { auth, database } from "../services";
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref, set, update } from "firebase/database";
+import toast from "react-hot-toast";
 
 type AuthProps = {
   children: ReactNode;
@@ -26,6 +27,7 @@ export type User = {
 type AuthContextType = {
   user: User | null;
   loadingAuth: boolean;
+  updateUser: (user: User) => void;
   signInWithGoogle: () => Promise<void>;
   signInWithGithub: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -103,6 +105,31 @@ export function AuthProvider({ children }: AuthProps) {
     setUser(parsedUser);
   }
 
+  async function updateUser({ name, avatar }: User) {
+    await update(ref(database, `users/${user?.uid}`), {
+      name: name,
+      avatar: avatar,
+    })
+      .then(() => {
+        toast.success("registro atualizada com sucesso!", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      });
+  }
+
   const logOut = async () => {
     await signOut(auth);
     setUser(null);
@@ -133,6 +160,7 @@ export function AuthProvider({ children }: AuthProps) {
         user,
         loadingAuth,
         signIn,
+        updateUser,
         signInWithGoogle,
         signUpWithEmailAndPassword,
         logOut,
