@@ -35,19 +35,19 @@ type AuthContextType = {
     email: string,
     password: string,
     displayName: string,
-    avatar?: string
+    avatar?: string,
   ) => Promise<void>;
   logOut: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
-  {} as AuthContextType
+  {} as AuthContextType,
 );
 
 export function AuthProvider({ children }: AuthProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
-  const isUserEmpty = user === null;
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: AuthProps) {
       setLoadingAuth(false);
     });
     return () => unsubscribe();
-  }, [!isUserEmpty]);
+  }, []);
 
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: AuthProps) {
     email: string,
     password: string,
     displayName: string,
-    avatar?: string
+    avatar?: string,
   ) {
     const user = await createUserWithEmailAndPassword(auth, email, password);
     const userRef = ref(database, `users/${user.user.uid}`);
