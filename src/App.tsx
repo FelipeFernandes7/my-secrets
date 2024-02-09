@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Home } from "./pages/home";
 import { Layout } from "./components/layout";
-import { Note } from "./pages/note";
 import { NoteDetail } from "./pages/detail";
 import { Login } from "./pages/login";
 import { NotFound } from "./pages/notFound";
 import { Private } from "./routes";
 import { Register } from "./pages/register";
+import { Annotation } from "./pages/annotation";
 
 const router = createBrowserRouter([
   {
@@ -21,15 +21,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/note",
+        path: "/annotation",
         element: (
           <Private>
-            <Note />
+            <Annotation />
           </Private>
         ),
       },
       {
-        path: "/notes/:id",
+        path: "/annotation/:id",
         element: (
           <Private>
             <NoteDetail />

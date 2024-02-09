@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Input } from "../../components/input";
-import { useAuth, useNote } from "../../hooks";
+import { useAuth } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
@@ -10,6 +9,7 @@ import { z } from "zod";
 import { BsArrowLeftShort } from "react-icons/bs";
 
 import * as Chakra from "@chakra-ui/react";
+import { TextField } from "../../components/textField";
 
 interface ConfPasswordVisible {
   type: "password" | "text";
@@ -37,11 +37,10 @@ export function Register() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { signUpWithEmailAndPassword, logOut } = useAuth();
-  const { isVisible, changeVisibleState } = useNote();
-  const [confPasswordIsVisible, setConfPasswordIsVisible] =
-    useState<ConfPasswordVisible>({
-      type: "password",
-    });
+
+  useState<ConfPasswordVisible>({
+    type: "password",
+  });
 
   const {
     register,
@@ -90,7 +89,7 @@ export function Register() {
               color: "#fff",
             },
             position: "top-center",
-          }
+          },
         );
         setIsLoading(false);
       });
@@ -98,12 +97,6 @@ export function Register() {
   useEffect(() => {
     logOut();
   }, []);
-
-  function handleShowConfPassword() {
-    setConfPasswordIsVisible({
-      type: confPasswordIsVisible.type === "password" ? "text" : "password",
-    });
-  }
 
   const handleNavigate = () => {
     navigate("/login", { replace: true });
@@ -164,15 +157,15 @@ export function Register() {
           flexDirection={"column"}
           gap={"1rem"}
         >
-          <Input
+          <TextField
             name="name"
-            type={"user"}
+            type={"text"}
             label="Nome de usuário"
             placeholder={"Digite o nome de usuário"}
             register={register}
             error={errors.name}
           />
-          <Input
+          <TextField
             name="email"
             type={"email"}
             label="E-mail"
@@ -180,20 +173,18 @@ export function Register() {
             register={register}
             error={errors.email}
           />
-          <Input
+          <TextField
             name="password"
-            type={isVisible.type}
+            type={"text"}
             label="Senha"
-            handleSeePassword={changeVisibleState}
             placeholder={"Digite sua senha"}
             register={register}
             error={errors.password}
           />
-          <Input
+          <TextField
             name="confPassword"
-            type={confPasswordIsVisible.type}
+            type="text"
             label="Confirme senha"
-            handleSeePassword={handleShowConfPassword}
             placeholder={"Confirme sua senha"}
             register={register}
             error={errors.confPassword}
