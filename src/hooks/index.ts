@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { NoteContext } from "../context/NoteContext";
+import { AnnotationContext } from "../context/AnnotationContext";
 
 export const useAuth = () => useContext(AuthContext);
-export const useNote = () => useContext(NoteContext);
+export const useAnnotation = () => useContext(AnnotationContext);
