@@ -1,136 +1,85 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { BiSolidTrashAlt } from "react-icons/bi";
-import * as Chakra from "@chakra-ui/react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { useNote } from "../../hooks";
+import { useAnnotation } from "../../hooks";
 import { useState } from "react";
-import { Alert } from "../modal/alert";
-import { useDisclosure } from "@chakra-ui/react";
+import { ModalAlert } from "../modal/alert";
 
-type CardProps = {
+interface CardProps {
   id: string;
-  week: string;
-  hours: string;
-  title: string;
-};
-export function Card({ week, hours, title, id }: CardProps) {
-  const [showTrashIcon, setShowTrashIcon] = useState(false);
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const [noteId, setNoteId] = useState("");
+  created: string;
+  inHours: string;
+  annotationTitle: string;
+}
+export function Card({ created, inHours, annotationTitle, id }: CardProps) {
+  const [showButton, setShowButton] = useState(false);
+  const [annotationId, setAnnotationId] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { deleteAnnotation } = useAnnotation();
   const navigate = useNavigate();
 
-  const handleCardClick = () => {
-    setShowTrashIcon((state) => !state);
+  const showDeleteButton = () => {
+    setShowButton((state) => !state);
   };
 
-  const { deleteNote } = useNote();
- 
-  async function deleteAnnotation(id: string) {
-    if (id === noteId) {
-      await deleteNote(id);
+  async function handleDelete(id: string) {
+    if (id === annotationId) {
+      await deleteAnnotation(id);
       navigate("/");
-      setNoteId("");
+      setIsOpen(false);
+      setAnnotationId("");
     }
   }
 
-  function handleOpen() {
-    setNoteId(id);
-    onOpen();
-  }
+  const openModal = () => {
+    setAnnotationId(id);
+    setIsOpen(true);
+  };
+
+  const onClose = () => {
+    setIsOpen(false);
+    setShowButton(false);
+  };
 
   return (
-    <Chakra.Flex
-      onClick={handleCardClick}
-      position={"relative"}
-      flexDirection={"column"}
-      borderRadius={"1rem"}
-      cursor={"pointer"}
-      bg={"#181818"}
-      transition={"all linear 0.3s"}
-      w={"100%"}
-      h={"12em"}
-      _active={{
-        transform: "scale(0.95)",
-      }}
-      marginBottom={{ base: "1rem", md: "0" }}
+    <div
+      onClick={showDeleteButton}
+      className="active:scale-95 flex flex-col relative transition-all duration-300 w-full bg-[#181818] rounded-xl md:max-w-[380px] cursor-pointer"
     >
-      {showTrashIcon && (
-        <Chakra.Box
-          onClick={handleOpen}
-          position={"absolute"}
-          top={"1.5rem"}
-          right={"1.5rem"}
-          cursor={"pointer"}
-          fontSize={"1.5rem"}
-          color={"#ad1deb"}
-          transition={"all linear 0.3s"}
-        >
-          <Chakra.Icon as={BiSolidTrashAlt} />
-        </Chakra.Box>
+      {showButton && (
+        <div className="absolute top-6 right-6 transition-all duration-300 ease-linear">
+          <BiSolidTrashAlt
+            onClick={openModal}
+            className="text-[#c026d3] text-2xl"
+          />
+        </div>
       )}
-      <Chakra.Flex
-        w={"100%"}
-        ml={"1.5rem"}
-        mt={"1.5rem"}
-        flexDirection={"column"}
-        gap={"0.5rem"}
-      >
-        <Chakra.Text fontWeight={200} fontSize={"1rem"}>
-          {format(new Date(week), "EEEE", { locale: ptBR })}
-        </Chakra.Text>
-        <Chakra.Text
-          fontSize={"2rem"}
-          fontWeight={400}
-          gap={"0.5rem"}
-          backgroundColor={"#6e72fc"}
-          backgroundImage="linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"
-          css={{
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          {format(new Date(hours), "p", { locale: ptBR })}h
-        </Chakra.Text>
-      </Chakra.Flex>
-      <Chakra.Box
-        w={"100%"}
-        mt={"0.5rem"}
-        p={"0.95rem"}
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"center"}
-      >
+      <section className="flex flex-col px-6 py-6 gap-2">
+        <p className="text-white text-lg font-medium">
+          {format(new Date(created), "EEEE", { locale: ptBR })}
+        </p>
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-[#4f46e5] to-[#c026d3] bg-clip-text text-transparent">
+          {format(new Date(inHours), "p", { locale: ptBR })}h
+        </h1>
+      </section>
+      <section className="flex flex-col items-center justify-center pb-10">
         <Link
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textDecoration: "none",
-            transition: "all linear 0.3s",
-            width: "100%",
-            color: "#fff",
-          }}
-          to={`notes/${id}`}
+          className="w-full flex justify-center items-center "
+          to={`annotation/${id}`}
         >
-          <Chakra.Text
-            fontSize={"1.5rem"}
-            fontWeight={400}
-            whiteSpace={"nowrap"}
-            overflow={"hidden"}
-            textOverflow={"ellipsis"}
-            maxW={{ base: "300px", md: "500px" }}
-          >
-            {title}
-          </Chakra.Text>
+          <h1 className="overflow-hidden text-ellipsis text-xl font-medium text-[#c026d3] hover:font-bold transition-all duration-300 max-w-[200px] whitespace-nowrap">
+            {annotationTitle}
+          </h1>
         </Link>
-      </Chakra.Box>
-      <Alert
+      </section>
+      <ModalAlert
         isOpen={isOpen}
         onClose={onClose}
-        deleteAnnotation={() => deleteAnnotation(id)}
+        deleteAnnotation={() => handleDelete(id)}
       />
-    </Chakra.Flex>
+    </div>
   );
 }
