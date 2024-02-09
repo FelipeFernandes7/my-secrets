@@ -53,7 +53,7 @@ export function AuthProvider({ children }: AuthProps) {
       if (user) {
         const { displayName, photoURL, uid } = user;
         setUser({
-          name: displayName ?? "unknown",
+          name: displayName,
           avatar: photoURL,
           uid,
         });
