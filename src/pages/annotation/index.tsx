@@ -43,7 +43,7 @@ export function Annotation() {
   return (
     <div className="w-full px-4 flex flex-col items-center ">
       <h1 className="text-xl font-bold mt-5">
-        Olá {user?.name}, deseja anotar algo?
+        Olá {user?.name?.slice(0, 6)}, deseja anotar algo?
       </h1>
       <form
         onSubmit={handleSubmit(handleFormValues)}
