@@ -1,21 +1,18 @@
 import { useEffect, useState } from "react";
-import { Input } from "../../components/input";
 
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth, useNote } from "../../hooks";
+import { useAuth } from "../../hooks";
 import { z } from "zod";
 import { BsShieldLockFill } from "react-icons/bs";
-import * as Chakra from "@chakra-ui/react";
 
 import toast from "react-hot-toast";
-import { useMediaQuery } from "@chakra-ui/react";
+import { TextField } from "../../components/textField";
+import { ImSpinner10 } from "react-icons/im";
 
 export function Login() {
-  const { isVisible, changeVisibleState } = useNote();
   const [isLoading, setIsLoading] = useState(false);
-  const [isSmallerThen860] = useMediaQuery("(max-width: 768px)");
   const { signIn, logOut } = useAuth();
 
   const schema = z.object({
@@ -69,61 +66,22 @@ export function Login() {
   }, []);
 
   return (
-    <Chakra.Flex
-      flexDirection={{ md: "row", base: "column" }}
-      overflow={"hidden"}
-      h={"100vh"}
-      w={"100%"}
-      transition={"all linear 0.3s"}
-    >
-      {isSmallerThen860 && (
-        <Chakra.Flex flexDirection={"column"} w={"100%"}>
-          <Chakra.Text
-            mt={"1.5rem"}
-            textAlign={"center"}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            whiteSpace="nowrap"
-            fontSize={"2.5rem"}
-            gap={".5rem"}
-            fontWeight={700}
-            backgroundColor={"#6e72fc"}
-            backgroundImage="linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"
-            css={{
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            My Secrets
-            <Chakra.Icon as={BsShieldLockFill} />
-          </Chakra.Text>
-        </Chakra.Flex>
-      )}
-      <Chakra.Box
-        as="form"
-        mt={{base:"-5rem", md: "0"}}
+    <div className=" w-full flex flex-col md:flex-row overflow-hidden h-screen transition-all duration-300 ease-linear">
+      <div className="flex flex-col w-full md:hidden ">
+        <h1 className="flex items-center w-full justify-center gap-4 text-5xl font-bold whitespace-nowrap mt-6 text-center bg-gradient-to-r from-[#6e72fc] to-[#ad1deb] bg-clip-text text-transparent">
+          My Secrets
+          <BsShieldLockFill className="text-4xl text-white" />
+        </h1>
+      </div>
+      <form
         onSubmit={handleSubmit(onSubmit)}
-        h={"100vh"}
-        w={{ md: "50%", base: "100%" }}
-        display={"flex"}
-        flexDirection={"column"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        pr={"1.5rem"}
-        pl={"1.5rem"}
+        className="w-full md:w-1/2 flex flex-col items-center px-6 h-screen mt-[20vh]"
       >
-        <Chakra.Text fontSize={"2rem"} fontWeight={"bold"}>
-          <h1>Login</h1>
-        </Chakra.Text>
-        <Chakra.Flex
-          w={"100%"}
-          maxW={"450px"}
-          flexDirection={"column"}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <Input
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-[#4f46e5] to-[#c026d3] bg-clip-text text-transparent">
+          Login
+        </h1>
+        <section className="w-full flex md:max-w-[450px] flex-col items-center gap-4">
+          <TextField
             name="email"
             label="E-mail"
             type={"email"}
@@ -131,69 +89,38 @@ export function Login() {
             error={errors.email}
             register={register}
           />
-          <Input
+          <TextField
             label="Senha"
-            type={isVisible.type}
             name="password"
+            type={"password"}
             placeholder="Entrar com a senha"
             register={register}
-            handleSeePassword={changeVisibleState}
             error={errors.password}
           />
-          <Chakra.Button
+          <button
             type="submit"
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            w={"100%"}
-            mt={"1.5rem"}
-            h={"3rem"}
-            cursor={"pointer"}
-            borderRadius={"0.5rem"}
-            backgroundColor={"#6e72fc"}
-            backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
-            color={"#fff"}
-            _hover={{
-              hover: "none",
-            }}
-            _disabled={{
-              opacity: "0.5",
-              cursor: "not-allowed",
-            }}
+            className="active:scale-95 flex items-center justify-center w-full mt-6 h-12 rounded-xl cursor-pointer bg-gradient-to-r from-[#4f46e5] to-[#c026d3] hover:opacity-75 transition-all duration-300"
           >
-            {isLoading ? <Chakra.Spinner color="#fff" /> : "entrar"}
-          </Chakra.Button>
-        </Chakra.Flex>
-        <Chakra.Text mt={"1.5rem"} textAlign={"center"}>
-          Ainda não tem uma conta?{" "}
-          <Link style={{ color: "#ad1deb" }} to={"/register"}>
+            {isLoading ? (
+              <ImSpinner10 className="animate-spin text-3xl text-white" />
+            ) : (
+              "Entrar"
+            )}
+          </button>
+        </section>
+        <h3 className="mt-6 gap-2 flex items-center text-center text-white">
+          Ainda não tem uma conta?
+          <Link className="text-[#4f46e5]" to={"/register"}>
             Cadastre-se
           </Link>
-        </Chakra.Text>
-      </Chakra.Box>
-      <Chakra.Flex
-        w={"50%"}
-        height={"100vh"}
-        display={{ base: "none", md: "block" }}
-        justifyContent={"center"}
-        alignItems={"center"}
-        backgroundColor={"#6e72fc"}
-        backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
-      >
-        <Chakra.Flex
-          display={"flex"}
-          h={"100%"}
-          flexDirection={"column"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          textAlign={"center"}
-          fontSize={"4.5rem"}
-          gap={".5rem"}
-        >
+        </h3>
+      </form>
+      <section className="hidden md:block w-[50%] h-screen bg-gradient-to-r from-[#4f46e5] to-[#c026d3]">
+        <div className="flex flex-col h-full justify-center items-center text-center gap-3 text-5xl">
           My Secrets
-          <Chakra.Icon as={BsShieldLockFill} />
-        </Chakra.Flex>
-      </Chakra.Flex>
-    </Chakra.Flex>
+          <BsShieldLockFill className="text-4xl text-white" />
+        </div>
+      </section>
+    </div>
   );
 }

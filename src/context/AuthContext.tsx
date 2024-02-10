@@ -11,7 +11,8 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { parseUser } from "../helpers/utils";
 import { auth, database } from "../services";
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref, set, update } from "firebase/database";
+import toast from "react-hot-toast";
 
 type AuthProps = {
   children: ReactNode;
@@ -26,6 +27,7 @@ export type User = {
 type AuthContextType = {
   user: User | null;
   loadingAuth: boolean;
+  updateUser: (user: User) => void;
   signInWithGoogle: () => Promise<void>;
   signInWithGithub: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -33,25 +35,25 @@ type AuthContextType = {
     email: string,
     password: string,
     displayName: string,
-    avatar?: string
+    avatar?: string,
   ) => Promise<void>;
   logOut: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
-  {} as AuthContextType
+  {} as AuthContextType,
 );
 
 export function AuthProvider({ children }: AuthProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
-  const isUserEmpty = user === null;
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { displayName, photoURL, uid } = user;
         setUser({
-          name: displayName ?? "unknown",
+          name: displayName,
           avatar: photoURL,
           uid,
         });
@@ -59,7 +61,7 @@ export function AuthProvider({ children }: AuthProps) {
       setLoadingAuth(false);
     });
     return () => unsubscribe();
-  }, [!isUserEmpty]);
+  }, []);
 
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
@@ -86,7 +88,7 @@ export function AuthProvider({ children }: AuthProps) {
     email: string,
     password: string,
     displayName: string,
-    avatar?: string
+    avatar?: string,
   ) {
     const user = await createUserWithEmailAndPassword(auth, email, password);
     const userRef = ref(database, `users/${user.user.uid}`);
@@ -101,6 +103,31 @@ export function AuthProvider({ children }: AuthProps) {
       uid: user.user.uid,
     };
     setUser(parsedUser);
+  }
+
+  async function updateUser({ name, avatar }: User) {
+    await update(ref(database, `users/${user?.uid}`), {
+      name: name,
+      avatar: avatar,
+    })
+      .then(() => {
+        toast.success("registro atualizada com sucesso!", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      });
   }
 
   const logOut = async () => {
@@ -133,6 +160,7 @@ export function AuthProvider({ children }: AuthProps) {
         user,
         loadingAuth,
         signIn,
+        updateUser,
         signInWithGoogle,
         signUpWithEmailAndPassword,
         logOut,

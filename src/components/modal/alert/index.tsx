@@ -1,57 +1,86 @@
-import { useRef } from "react";
-import * as Chakra from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-type AlertProps = {
+interface ModalAlertProps {
   isOpen: boolean;
   onClose: () => void;
   deleteAnnotation: (id: string) => void;
-};
-export function Alert({ isOpen, onClose, deleteAnnotation }: AlertProps) {
-  const cancelRef = useRef<HTMLButtonElement | null>(null);
+}
+
+export function ModalAlert({
+  isOpen,
+  onClose,
+  deleteAnnotation,
+}: ModalAlertProps) {
   const { id } = useParams();
-  const noteId = String(id);
+  const annotationId = String(id);
+
+  useEffect(() => {
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+    } else {
+      document.removeEventListener("keydown", handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose]);
 
   return (
-    <Chakra.AlertDialog
-      motionPreset="slideInBottom"
-      leastDestructiveRef={cancelRef}
-      onClose={onClose}
-      isOpen={isOpen}
-      isCentered
-    >
-      <Chakra.AlertDialogOverlay />
-
-      <Chakra.AlertDialogContent
-        background={"#191919"}
-        color={"#fff"}
-        w={"350px"}
-      >
-        <Chakra.AlertDialogHeader>Deseja Excluir</Chakra.AlertDialogHeader>
-        <Chakra.AlertDialogCloseButton />
-        <Chakra.AlertDialogBody color={"#fff"} textAlign={"center"}>
-          Essa anotação será deletada permanentemente, deseja continuar?
-        </Chakra.AlertDialogBody>
-        <Chakra.AlertDialogFooter>
-          <Chakra.Button
-            bg={"#232323"}
-            color={"#fff"}
-            ref={cancelRef}
-            onClick={onClose}
-          >
-            Nâo
-          </Chakra.Button>
-          <Chakra.Button
-            onClick={() => deleteAnnotation(noteId)}
-            color={"#fff"}
-            backgroundColor={"#6e72fc"}
-            backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
-            ml={3}
-          >
-            Sim
-          </Chakra.Button>
-        </Chakra.AlertDialogFooter>
-      </Chakra.AlertDialogContent>
-    </Chakra.AlertDialog>
+    <>
+      {isOpen && (
+        <div className=" flex absolute inset-0 items-center justify-center z-50 ">
+          <div className="absolute bg-black opacity-50" onClick={onClose}></div>
+          <div className="relative bg-neutral-900 p-8 rounded-xl">
+            <h2 className="text-white text-lg font-bold mb-4">
+              Deseja Excluir
+            </h2>
+            <button
+              className="active:scale-95 transition-all duration-300 absolute top-0 right-0 p-2"
+              onClick={onClose}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div className="text-white text-center mb-4">
+              Essa anotação será deletada permanentemente, deseja continuar?
+            </div>
+            <div className="flex justify-center">
+              <button
+                className="active:scale-95 transition-all duration-300 bg-gray-600 text-white px-4 py-2 rounded-xl mr-2"
+                onClick={onClose}
+              >
+                Não
+              </button>
+              <button
+                className="active:scale-95 transition-all duration-300 bg-gradient-to-r from-indigo-600 to-purple-500 text-white px-4 py-2 rounded-xl"
+                onClick={() => deleteAnnotation(annotationId)}
+              >
+                Sim
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

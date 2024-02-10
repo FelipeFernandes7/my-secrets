@@ -1,174 +1,73 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-
-import { Notes } from "../../context/NoteContext";
-import * as S from "./styles";
-
-import { BiLeftArrowAlt } from "react-icons/bi";
-import { FaRegEdit } from "react-icons/fa";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { capitalizeFirstLetter, getRandomColor } from "../../helpers";
+import { ImSpinner10 } from "react-icons/im";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { database } from "../../services";
-import { onValue, ref } from "firebase/database";
-import { useAuth, useNote } from "../../hooks";
-import { translation } from "../../helpers/translation";
-import { Spinner } from "../../components/spinner";
+import { get, ref } from "firebase/database";
+import { useAuth } from "../../hooks";
+import { Annotation } from "../../context/AnnotationContext";
 
 export function NoteDetail() {
-  const { isEditing, setIsEditing, updateNote } = useNote();
-  const navigate = useNavigate();
-  const [note, setNote] = useState<Notes>();
-  const { id } = useParams();
-  const noteId = String(id);
   const { user } = useAuth();
-
-  function back() {
-    setIsEditing(false);
-    navigate("/");
-  }
-
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const enableBgToEdit = isEditing
-    ? {
-        backgroundColor: "#6e72fc",
-        backgroundImage: " linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)",
-        color: "#fff",
-      }
-    : {
-        background: "#232323",
-        color: "#fff",
-      };
-  function autoResize() {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = "auto";
-      textarea.style.height = textarea.scrollHeight + "px";
-    }
-  }
+  const [annotationData, setAnnotationData] = useState<Annotation>();
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
+  const annotationId = String(id);
 
   useEffect(() => {
-    autoResize();
-  }, [note?.annotation]);
+    const fetchAnnotation = async () => {
+      try {
+        if (!user) throw new Error("User not found");
 
-  function activeUpdateNote() {
-    setIsEditing((t) => !t);
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-        textareaRef.current.selectionStart = textareaRef.current.value.length;
-        textareaRef.current.selectionEnd = textareaRef.current.value.length;
+        const annotationRef = ref(
+          database,
+          `${user.uid}/annotations/${annotationId}`,
+        );
+        const snapshot = await get(annotationRef);
+
+        if (snapshot.exists()) {
+          const annotation = snapshot.val();
+          setAnnotationData({
+            id: snapshot.key as string,
+            annotation: annotation.annotation,
+            created: annotation.created,
+            title: annotation.title,
+          });
+        } else {
+          throw new Error("Annotation not found");
+        }
+      } catch (error) {
+        console.error("Error fetching annotation:", error);
+        setAnnotationData(undefined);
+      } finally {
+        setLoading(false);
       }
-    }, 10);
-  }
-
-  useEffect(() => {
-    if (!noteId) return;
-
-    const noteRef = ref(database, `notes/${user?.uid}/notes/${noteId}`);
-
-    const getData = onValue(noteRef, (snapshot) => {
-      const data: Notes = {
-        id: noteId,
-        annotation: snapshot.val().annotation,
-        title: snapshot.val().title,
-        author: snapshot.val().author,
-        created: snapshot.val().created,
-        feeling: snapshot.val().feeling,
-      };
-      setNote(data);
-    });
-
-    return () => {
-      getData();
     };
-  }, [noteId]);
 
-  if (!note) {
+    fetchAnnotation();
+  }, [id]);
+
+  if (loading) {
     return (
-      <S.Loading>
-        <Spinner
-          style={{
-            width: 200,
-            height: 200,
-          }}
-        />
-      </S.Loading>
+      <main className="flex justify-center items-center h-[75vh] ">
+        <ImSpinner10 size={40} className="animate-spin text-[#c026d3]" />
+      </main>
     );
   }
 
-  function onChangeTitle(e: ChangeEvent<HTMLTextAreaElement>) {
-    const hasNote = note && Object.keys(note).length;
-    if (hasNote) {
-      setNote({ ...note, id: noteId, title: e.target.value });
-    }
+  if (!annotationData) {
+    return (
+      <div className="w-full flex flex-col items-center px-6">
+        <h1 className="text-2xl font-bold ">No Annotation Found</h1>
+      </div>
+    );
   }
-
-  function onChangeAnnotation(e: ChangeEvent<HTMLTextAreaElement>) {
-    const hasNote = note && Object.keys(note).length;
-    if (hasNote) {
-      setNote({ ...note, id: noteId, annotation: e.target.value });
-    }
-  }
-
-  const randomColor = getRandomColor();
 
   return (
-    <S.DetailWrapper>
-      <S.ActionBox>
-        <S.Action onClick={back}>
-          <BiLeftArrowAlt />
-        </S.Action>
-        <S.Action style={enableBgToEdit} onClick={() => activeUpdateNote()}>
-          <FaRegEdit />
-        </S.Action>
-      </S.ActionBox>
-      {note.created && (
-        <S.AnnotationDate>
-          {format(new Date(note.created), "PP", {
-            locale: ptBR,
-          })}
-        </S.AnnotationDate>
-      )}
-      <S.Form>
-        <S.AnnotationTitle
-          disabled={!isEditing}
-          onChange={onChangeTitle}
-          value={capitalizeFirstLetter(note ? note.title : "")}
-        />
-        <S.Textarea
-          style={{ fontStyle: isEditing ? "italic" : "normal" }}
-          id="annotation"
-          ref={textareaRef}
-          onInput={autoResize}
-          disabled={!isEditing}
-          onChange={onChangeAnnotation}
-          value={note?.annotation}
-        />
-        {isEditing && (
-          <S.Wrapper>
-            <S.ButtonSubmit
-              type="button"
-              onClick={() => updateNote(noteId, note.annotation, note.title)}
-            >
-              Salvar Alteração
-            </S.ButtonSubmit>
-          </S.Wrapper>
-        )}
-        {note.feeling && (
-          <S.FeelingWrapper>
-            <h1>
-              Sentimento:
-              {translation(note).map((key) => (
-                <span style={{ background: randomColor }} key={key}>
-                  {key}
-                </span>
-              ))}
-            </h1>
-          </S.FeelingWrapper>
-        )}
-      </S.Form>
-    </S.DetailWrapper>
+    <div className="w-full flex flex-col items-center px-6">
+      <h1 className="text-2xl font-bold ">Olá {user?.name}</h1>
+      <span>Minha Anotação</span>
+      <h3>{annotationData.annotation}</h3>
+      <h3>{annotationData.title}</h3>
+    </div>
   );
 }

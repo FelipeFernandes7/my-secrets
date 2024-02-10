@@ -1,75 +1,49 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { NoteContext } from "../../context/NoteContext";
 import { Card } from "../../components/card";
 
 import { MdAdd } from "react-icons/md";
-import { NoRegister } from "../../components/noRegister";
-import * as Chakra from "@chakra-ui/react";
+import { HiOutlineAnnotation } from "react-icons/hi";
+import { useAnnotation } from "../../hooks";
 export function Home() {
-  const { data } = useContext(NoteContext);
+  const { data } = useAnnotation();
   const navigate = useNavigate();
-  function handleAddNewNote() {
-    navigate("/note");
-  }
-  const noteCount = Object.keys(data).length;
-  return (
-    <Chakra.Flex
-      w={"100%"}
-      flexDirection={"column"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      position={"relative"}
-    >
-      <Chakra.Box
-        width="100%"
-        display={{ md: "grid", base: "flex" }}
-        gap={{ md: "1rem", base: "0" }}
-        mb="1.5rem"
-        pl="1.5rem"
-        pr="1.5rem"
-        flexWrap={{ base: "wrap" }}
-        gridTemplateColumns={{
-          md: "repeat(auto-fit, minmax(400px, 1fr))",
-          base: "none",
-        }}
-        transition="all linear 0.3s"
-      >
-        {!noteCount && <NoRegister />}
-        {data.map((note) => (
-          <Card
-            key={note.id}
-            week={note.created}
-            hours={note.created}
-            title={note.title}
-            id={note.id}
-          />
-        ))}
-      </Chakra.Box>
+  const handleNavigate = () => {
+    navigate("/annotation");
+  };
+  const annotationCount = Object.keys(data).length;
 
-      <Chakra.Button
-        position="fixed"
-        display="flex"
-        align-items="center"
-        justify-content="center"
-        bottom=" 2rem"
-        backgroundColor="#6e72fc"
-        backgroundImage="linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"
-        border="none"
-        height="3.5rem"
-        width="3.5rem"
-        borderRadius="100%"
-        cursor="pointer"
-        transition="all linear 0.3s"
-        onClick={handleAddNewNote}
-        fontSize={"1.5rem"}
-        color={"#fff"}
-        _active={{
-          transform: "scale(0.95)",
-        }}
+  return (
+    <div className="w-full flex flex-col items-center px-4">
+      <h1 className="text-2xl font-bold mt-5 bg-gradient-to-r from-[#4f46e5] to-[#c026d3] bg-clip-text text-transparent">
+        Minhas Anotações
+      </h1>
+      <section className="w-full mt-5 flex flex-wrap justify-center items-center gap-4 md:px-4 py-4 md:py-0">
+        {annotationCount > 0 ? (
+          data?.map((item) => (
+            <Card
+              key={item.id}
+              annotationTitle={item.title}
+              inHours={item.created}
+              created={item.created}
+              id={item.id}
+            />
+          ))
+        ) : (
+          <div className="w-full flex items-center justify-center flex-col gap-2 p-4 opacity-95 h-[50vh]">
+            <HiOutlineAnnotation className="text-slate-600" size={100} />
+            <h1 className="text-slate-600 text-2xl md:text-xl whitespace-pre-wrap text-center ">
+              Oops, parece que você ainda não tem anotações
+            </h1>
+          </div>
+        )}
+      </section>
+
+      <button
+        onClick={handleNavigate}
+        className="active:scale-95 transition-all duration-300 fixed bottom-7 bg-gradient-to-r from-[#4f46e5] to-[#c026d3] h-20 w-20 md:h-14 md:w-14 rounded-full flex items-center justify-center"
       >
-        <Chakra.Icon as={MdAdd} />
-      </Chakra.Button>
-    </Chakra.Flex>
+        <MdAdd className="text-white text-4xl md:text-2xl" />
+      </button>
+    </div>
   );
 }

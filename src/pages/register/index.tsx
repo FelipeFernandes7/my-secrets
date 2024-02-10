@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import { Input } from "../../components/input";
-import { useAuth, useNote } from "../../hooks";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import { BsArrowLeftShort } from "react-icons/bs";
+import { BsShieldLockFill } from "react-icons/bs";
 
-import * as Chakra from "@chakra-ui/react";
-
-interface ConfPasswordVisible {
-  type: "password" | "text";
-}
+import { TextField } from "../../components/textField";
+import { ImSpinner10 } from "react-icons/im";
 
 const schema = z.object({
   name: z.string().nonempty("Campo nome é obrigatório"),
@@ -37,11 +33,6 @@ export function Register() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { signUpWithEmailAndPassword, logOut } = useAuth();
-  const { isVisible, changeVisibleState } = useNote();
-  const [confPasswordIsVisible, setConfPasswordIsVisible] =
-    useState<ConfPasswordVisible>({
-      type: "password",
-    });
 
   const {
     register,
@@ -90,7 +81,7 @@ export function Register() {
               color: "#fff",
             },
             position: "top-center",
-          }
+          },
         );
         setIsLoading(false);
       });
@@ -99,130 +90,78 @@ export function Register() {
     logOut();
   }, []);
 
-  function handleShowConfPassword() {
-    setConfPasswordIsVisible({
-      type: confPasswordIsVisible.type === "password" ? "text" : "password",
-    });
-  }
-
-  const handleNavigate = () => {
-    navigate("/login", { replace: true });
-  };
-
   return (
-    <Chakra.Flex
-      w={"100%"}
-      h={"100vh"}
-      flexDirection={"column"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      position={"relative"}
-    >
-      <Chakra.Flex
-        w={"100%"}
-        position={"fixed"}
-        top={"1.5rem"}
-        justifyContent={"flex-start"}
-        pl={"1.5rem"}
-      >
-        <Chakra.Button
-          onClick={handleNavigate}
-          display={"flex"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          w={"3rem"}
-          h={"3rem"}
-          borderRadius={"50%"}
-          border={"none"}
-          cursor={"pointer"}
-          fontWeight={"bold"}
-          backgroundColor={"#6e72fc"}
-          backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
-          color={"#fff"}
-          fontSize={"1.5rem"}
-        >
-          <Chakra.Icon as={BsArrowLeftShort} />
-        </Chakra.Button>
-      </Chakra.Flex>
-      <Chakra.Box
-        as="form"
+    <div className=" w-full flex flex-col md:flex-row overflow-hidden h-screen transition-all duration-300 ease-linear">
+      <div className="flex flex-col w-full md:hidden ">
+        <h1 className="flex items-center w-full justify-center gap-4 text-5xl font-bold whitespace-nowrap mt-6 text-center bg-gradient-to-r from-[#6e72fc] to-[#ad1deb] bg-clip-text text-transparent">
+          My Secrets
+          <BsShieldLockFill className="text-4xl text-white" />
+        </h1>
+      </div>
+      <form
         onSubmit={handleSubmit(onSubmit)}
-        w={"100%"}
-        display={"flex"}
-        flexDirection={"column"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        pr={"1.5rem"}
-        pl={"1.5rem"}
+        className="w-full md:w-1/2 flex flex-col items-center px-6 h-screen mt-[15vh]"
       >
-        <Chakra.Text fontSize={"2rem"} fontWeight={"bold"}>
-          Cadastro
-        </Chakra.Text>
-        <Chakra.Flex
-          w={"100%"}
-          maxW={"450px"}
-          flexDirection={"column"}
-          gap={"1rem"}
-        >
-          <Input
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-[#4f46e5] to-[#c026d3] bg-clip-text text-transparent">
+          Crie sua conta
+        </h1>
+        <section className="w-full flex md:max-w-[450px] flex-col items-center gap-4">
+          <TextField
             name="name"
-            type={"user"}
-            label="Nome de usuário"
-            placeholder={"Digite o nome de usuário"}
-            register={register}
+            label="Nome"
+            type={"text"}
+            placeholder="John Doe"
             error={errors.name}
-          />
-          <Input
-            name="email"
-            type={"email"}
-            label="E-mail"
-            placeholder={"Digite o seu e-mail"}
             register={register}
-            error={errors.email}
           />
-          <Input
-            name="password"
-            type={isVisible.type}
+          <TextField
+            name="email"
+            label="E-mail"
+            type={"email"}
+            placeholder="john@example.com"
+            error={errors.email}
+            register={register}
+          />
+          <TextField
             label="Senha"
-            handleSeePassword={changeVisibleState}
-            placeholder={"Digite sua senha"}
+            name="password"
+            type={"password"}
+            placeholder="Entrar com a senha"
             register={register}
             error={errors.password}
           />
-          <Input
+          <TextField
+            label="Confirme sua senha"
             name="confPassword"
-            type={confPasswordIsVisible.type}
-            label="Confirme senha"
-            handleSeePassword={handleShowConfPassword}
-            placeholder={"Confirme sua senha"}
+            type={"password"}
+            placeholder="Confirmar Senha"
             register={register}
             error={errors.confPassword}
           />
-          <Chakra.Button
+          <button
             type="submit"
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            w={"100%"}
-            mt={"1.5rem"}
-            h={"3rem"}
-            cursor={"pointer"}
-            borderRadius={"0.5rem"}
-            backgroundColor={"#6e72fc"}
-            backgroundImage={"linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%)"}
-            color={"#fff"}
-            _hover={{
-              hover: "none",
-            }}
-            _disabled={{
-              opacity: "0.5",
-              cursor: "not-allowed",
-            }}
+            className="active:scale-95 flex items-center justify-center w-full mt-6 h-12 rounded-xl cursor-pointer bg-gradient-to-r from-[#4f46e5] to-[#c026d3] hover:opacity-75 transition-all duration-300"
           >
-            {isLoading ? <Chakra.Spinner color="#fff" /> : "Salvar"}
-          </Chakra.Button>
-        </Chakra.Flex>
-      </Chakra.Box>
-    </Chakra.Flex>
+            {isLoading ? (
+              <ImSpinner10 className="animate-spin text-3xl text-white" />
+            ) : (
+              "Entrar"
+            )}
+          </button>
+        </section>
+        <h3 className="mt-6 gap-2 flex items-center text-center text-white">
+          Já tem uma conta? fazer
+          <Link className="text-[#4f46e5]" to={"/login"}>
+            login
+          </Link>
+        </h3>
+      </form>
+      <section className="hidden md:block w-[50%] h-screen bg-gradient-to-r from-[#4f46e5] to-[#c026d3]">
+        <div className="flex flex-col h-full justify-center items-center text-center gap-3 text-5xl">
+          My Secrets
+          <BsShieldLockFill className="text-4xl text-white" />
+        </div>
+      </section>
+    </div>
   );
 }
