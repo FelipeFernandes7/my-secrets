@@ -40,7 +40,7 @@ export function Home() {
 
       <button
         onClick={handleNavigate}
-        className="active:scale-95 transition-all duration-300 fixed bottom-7 bg-gradient-to-r from-[#4f46e5] to-[#c026d3] h-20 w-20 md:h-14 md:w-14 rounded-full flex items-center justify-center"
+        className="active:scale-95 transition-all duration-300 fixed bottom-7 bg-gradient-to-r from-[#4f46e5] to-[#c026d3] h-16 w-16 md:h-14 md:w-14 rounded-full flex items-center justify-center"
       >
         <MdAdd className="text-white text-4xl md:text-2xl" />
       </button>
