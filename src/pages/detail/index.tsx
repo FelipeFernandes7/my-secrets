@@ -1,6 +1,6 @@
 import { ImSpinner10 } from "react-icons/im";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { database } from "../../services";
 import { get, ref } from "firebase/database";
 import { useAuth } from "../../hooks";
@@ -12,7 +12,6 @@ export function NoteDetail() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const annotationId = String(id);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnnotation = async () => {
