@@ -30,14 +30,14 @@ export function AnnotationField({
       >
         {register && name ? (
           <textarea
-            className="w-full outline-none bg-transparent text-white p-2"
+            className="w-full outline-none bg-transparent text-white p-2 h-auto resize-none overflow-hidden "
             {...register(name)}
             {...(label ? { id: name } : {})}
             {...rest}
           />
         ) : (
           <textarea
-            className="w-full outline-none bg-transparent text-white p-2"
+            className="w-full outline-none bg-transparent text-white p-2 h-auto resize-none overflow-hidden "
             {...(label ? { id: name } : {})}
             {...rest}
           />

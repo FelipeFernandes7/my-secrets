@@ -64,6 +64,11 @@ export function Annotation() {
           name="annotation"
           register={register}
           error={errors.annotation}
+          onInput={(e) => {
+            const target = e.target as HTMLTextAreaElement;
+            target.style.height = "auto";
+            target.style.height = target.scrollHeight + "px";
+          }}
         />
 
         <button
