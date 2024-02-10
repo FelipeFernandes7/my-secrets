@@ -4,13 +4,13 @@ import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-  databaseURL: import.meta.env.VITE_DATABASE_URL,
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID,
+  apiKey: "AIzaSyAhA8bieHgGmKGzHcrjrm-vEiMXX3f5zzE",
+  authDomain: "my-secrets-62e59.firebaseapp.com",
+  databaseURL: "https://my-secrets-62e59-default-rtdb.firebaseio.com",
+  projectId: "my-secrets-62e59",
+  storageBucket: "my-secrets-62e59.appspot.com",
+  messagingSenderId: "778732615455",
+  appId: "1:778732615455:web:0c6365d4b1c533f36be22a",
 };
 
 const app = initializeApp(firebaseConfig);
