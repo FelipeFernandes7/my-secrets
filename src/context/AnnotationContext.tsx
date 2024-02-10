@@ -142,8 +142,8 @@ export function AnnotationProvider({ children }: AnnotationProviderProps) {
 
   async function updateAnnotation(
     id: string,
-    newAnnotation?: string,
     title?: string,
+    newAnnotation?: string,
   ) {
     if (!user) return;
     const notePath = ref(database, `${user.uid}/annotations/${id}`);

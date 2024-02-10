@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Home } from "./pages/home";
 import { Layout } from "./components/layout";
-import { NoteDetail } from "./pages/detail";
 import { Login } from "./pages/login";
 import { Private } from "./routes";
 import { Register } from "./pages/register";
 import { Annotation } from "./pages/annotation";
 import { NotFound } from "./pages/custom/not-found";
+import { AnnotationDetail } from "./pages/detail";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         path: "/annotation/:id",
         element: (
           <Private>
-            <NoteDetail />
+            <AnnotationDetail />
           </Private>
         ),
       },
