@@ -3,10 +3,10 @@ import { Home } from "./pages/home";
 import { Layout } from "./components/layout";
 import { NoteDetail } from "./pages/detail";
 import { Login } from "./pages/login";
-import { NotFound } from "./pages/notFound";
 import { Private } from "./routes";
 import { Register } from "./pages/register";
 import { Annotation } from "./pages/annotation";
+import { NotFound } from "./pages/custom/not-found";
 
 const router = createBrowserRouter([
   {

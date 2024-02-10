@@ -6,7 +6,6 @@ import { router } from "./App";
 import { Toaster } from "react-hot-toast";
 import { AnnotationProvider } from "./context/AnnotationContext";
 import { AuthProvider } from "./context/AuthContext";
-import { ChakraProvider } from "@chakra-ui/react";
 
 import "./styles/global.css";
 
@@ -15,9 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <AuthProvider>
       <AnnotationProvider>
         <Toaster position="bottom-center" reverseOrder={false} />
-        <ChakraProvider disableGlobalStyle>
-          <RouterProvider router={router} />
-        </ChakraProvider>
+        <RouterProvider router={router} />
       </AnnotationProvider>
     </AuthProvider>
   </React.StrictMode>,

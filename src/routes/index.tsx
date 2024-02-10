@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks";
 
-import * as Chakra from "@chakra-ui/react";
+import { ImSpinner10 } from "react-icons/im";
 interface PrivateProps {
   children: ReactNode;
 }
@@ -12,18 +12,9 @@ export function Private({ children }: PrivateProps) {
   const signed = !!user;
   if (loadingAuth) {
     return (
-      <Chakra.Flex
-        h="100vh"
-        position="absolute"
-        top={0}
-        bottom={0}
-        left={0}
-        right={0}
-        align="center"
-        justify="center"
-      >
-        <Chakra.Spinner size={"xl"} color="#ad1deb" />
-      </Chakra.Flex>
+      <div className="w-full flex items-center justify-center h-screen absolute top-0 bottom-0 left-0 right-0">
+        <ImSpinner10 size={40} className="animate-spin text-[#c026d3]" />
+      </div>
     );
   }
   if (!signed) {
