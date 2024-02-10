@@ -11,10 +11,6 @@ import { BsShieldLockFill } from "react-icons/bs";
 import { TextField } from "../../components/textField";
 import { ImSpinner10 } from "react-icons/im";
 
-interface ConfPasswordVisible {
-  type: "password" | "text";
-}
-
 const schema = z.object({
   name: z.string().nonempty("Campo nome é obrigatório"),
   email: z
@@ -37,10 +33,6 @@ export function Register() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { signUpWithEmailAndPassword, logOut } = useAuth();
-
-  useState<ConfPasswordVisible>({
-    type: "password",
-  });
 
   const {
     register,
