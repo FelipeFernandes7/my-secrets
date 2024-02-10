@@ -77,7 +77,9 @@ export function Login() {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full md:w-1/2 flex flex-col items-center px-6 h-screen mt-[20vh]"
       >
-        <h1 className="text-3xl font-bold">Login</h1>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-[#4f46e5] to-[#c026d3] bg-clip-text text-transparent">
+          Login
+        </h1>
         <section className="w-full flex md:max-w-[450px] flex-col items-center gap-4">
           <TextField
             name="email"
@@ -90,7 +92,7 @@ export function Login() {
           <TextField
             label="Senha"
             name="password"
-            type={"text"}
+            type={"password"}
             placeholder="Entrar com a senha"
             register={register}
             error={errors.password}

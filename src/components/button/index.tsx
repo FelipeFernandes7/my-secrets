@@ -1,29 +1,21 @@
 import { ButtonHTMLAttributes } from "react";
-import * as S from "./styles";
-import { Spinner } from "../spinner";
+import { ImSpinner10 } from "react-icons/im";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  color?: string;
-  bgColor?: string;
-  icon?: JSX.Element;
   isLoading?: boolean;
 }
 
-export function Button({
-  label,
-  color,
-  bgColor,
-  icon,
-  isLoading,
-  ...rest
-}: ButtonProps) {
+export function Button({ label, isLoading, ...rest }: ButtonProps) {
   return (
-    <S.ButtonStyled
-      icon={icon}
-      style={{ color, backgroundColor: bgColor }}
+    <button
       {...rest}
+      className="active:scale-95 flex items-center justify-center w-full mt-6 h-12 rounded-xl cursor-pointer bg-gradient-to-r from-[#4f46e5] to-[#c026d3] hover:opacity-75 transition-all duration-300"
     >
-      {isLoading ? <Spinner style={{ width: 80, height: 80 }} /> : label}
-    </S.ButtonStyled>
+      {isLoading ? (
+        <ImSpinner10 className="animate-spin text-3xl text-white" />
+      ) : (
+        label
+      )}
+    </button>
   );
 }
