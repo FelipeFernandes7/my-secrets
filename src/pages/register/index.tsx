@@ -127,7 +127,7 @@ export function Register() {
             label="Senha"
             name="password"
             type={"password"}
-            placeholder="Entrar com a senha"
+            placeholder="Insira sua senha"
             register={register}
             error={errors.password}
           />
