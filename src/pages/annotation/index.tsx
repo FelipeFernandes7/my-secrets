@@ -31,13 +31,17 @@ export function Annotation() {
   function handleFormValues(formValues: FormData) {
     const { annotation, title } = formValues;
     if (!user) return;
-    addAnnotation({
-      id: uuid(),
-      title: title,
-      annotation: annotation,
-      created: new Date().toISOString(),
-    });
-    navigate("/");
+    try {
+      addAnnotation({
+        id: uuid(),
+        title: title,
+        annotation: annotation,
+        created: new Date().toISOString(),
+      });
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
