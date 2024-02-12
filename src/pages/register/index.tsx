@@ -107,6 +107,7 @@ export function Register() {
         </h1>
         <section className="w-full flex md:max-w-[450px] flex-col items-center gap-4">
           <TextField
+            autoComplete="off"
             name="name"
             label="Nome"
             type={"text"}
@@ -115,6 +116,7 @@ export function Register() {
             register={register}
           />
           <TextField
+            autoComplete="off"
             name="email"
             label="E-mail"
             type={"email"}
@@ -123,6 +125,7 @@ export function Register() {
             register={register}
           />
           <TextField
+            autoComplete="off"
             label="Senha"
             name="password"
             type={"password"}
@@ -131,6 +134,7 @@ export function Register() {
             error={errors.password}
           />
           <TextField
+            autoComplete="off"
             label="Confirme sua senha"
             name="confPassword"
             type={"password"}
