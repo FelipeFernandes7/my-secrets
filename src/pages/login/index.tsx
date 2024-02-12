@@ -82,6 +82,7 @@ export function Login() {
         </h1>
         <section className="w-full flex md:max-w-[450px] flex-col items-center gap-4">
           <TextField
+            autoComplete="off"
             name="email"
             label="E-mail"
             type={"email"}
@@ -90,6 +91,7 @@ export function Login() {
             register={register}
           />
           <TextField
+            autoComplete="off"
             label="Senha"
             name="password"
             type={"password"}
