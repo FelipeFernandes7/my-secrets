@@ -64,7 +64,7 @@ export function TextField({
         {type === "password" && (
           <div className="flex items-center ">
             {showPassword ? (
-              <FaRegEyeSlash
+              <FaRegEye
                 onClick={toggleShowPassword}
                 className={`${
                   error ? "text-red-500" : "text-slate-500"
@@ -72,7 +72,7 @@ export function TextField({
                 size={24}
               />
             ) : (
-              <FaRegEye
+              <FaRegEyeSlash
                 onClick={toggleShowPassword}
                 className={`${
                   error ? "text-red-500" : "text-slate-500"
