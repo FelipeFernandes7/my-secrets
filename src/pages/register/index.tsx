@@ -67,9 +67,7 @@ export function Register() {
           position: "top-center",
         });
         setIsLoading(false);
-        setInterval(() => {
-          navigate("/", { replace: true });
-        }, 3000);
+        navigate("/", { replace: true });
       })
       .catch((error) => {
         console.log(error.message);
