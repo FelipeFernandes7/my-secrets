@@ -1,5 +1,5 @@
 import { ImSpinner10 } from "react-icons/im";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { database } from "../../services";
 import { get, ref } from "firebase/database";
@@ -73,15 +73,6 @@ export function AnnotationDetail() {
     fetchAnnotation();
   }, [id]);
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  useEffect(() => {
-    if (!textareaRef.current) return;
-
-    const textarea = textareaRef.current;
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-  }, [annotationData?.annotation, isEditing]);
-
   if (loading) {
     return (
       <main className="flex justify-center items-center h-[75vh] ">
@@ -137,8 +128,8 @@ export function AnnotationDetail() {
         <textarea
           {...register("annotation")}
           defaultValue={annotationData.annotation}
-          ref={textareaRef}
           disabled={!isEditing}
+          style={{ height: annotationData.annotation.length }}
           className={`overflow-hidden w-full p-2 mb-4 bg-transparent rounded-xl font-normal text-lg outline-none h-auto resize-none ${
             isEditing ? "border-[1px] border-slate-600 " : "border-0"
           }`}

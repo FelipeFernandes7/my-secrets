@@ -89,7 +89,7 @@ export function AnnotationProvider({ children }: AnnotationProviderProps) {
     return () => {
       off(todoRef, "value", handleData);
     };
-  }, [user]);
+  }, [user?.uid]);
 
   async function addAnnotation(annotation: Annotation) {
     if (!user) return;
@@ -116,28 +116,32 @@ export function AnnotationProvider({ children }: AnnotationProviderProps) {
   }
 
   async function deleteAnnotation(id: string) {
-    try {
-      if (!user) throw new Error("User not found");
+    if (!user) throw new Error("User not found");
 
-      const todoPath = ref(database, `${user.uid}/annotations/${id}`);
-      await remove(todoPath);
-      toast.success("Nota excluída com sucesso!", {
-        position: "top-center",
-        style: {
-          background: "#232323",
-          color: "#fff",
-        },
+    const todoPath = ref(database, `${user.uid}/annotations/${id}`);
+    await remove(todoPath)
+      .then(() => {
+        setData((prevData) =>
+          prevData.filter((annotation) => annotation.id !== id),
+        );
+        toast.success("Nota excluída com sucesso!", {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        console.error("Error deleting annotation:", error.message);
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            background: "#232323",
+            color: "#fff",
+          },
+        });
       });
-    } catch (error: Error | any) {
-      console.error("Error deleting annotation:", error.message);
-      toast.error(error.message, {
-        position: "top-center",
-        style: {
-          background: "#232323",
-          color: "#fff",
-        },
-      });
-    }
   }
 
   async function updateAnnotation(

@@ -10,7 +10,13 @@ export function Home() {
   const handleNavigate = () => {
     navigate("/annotation");
   };
-  const annotationCount = Object.keys(data).length;
+  const dataLength = Object.keys(data).length;
+
+  const sortedData = data.sort((a, b) => {
+    const recentDate = new Date(b.created);
+    const oldDate = new Date(a.created);
+    return recentDate.getTime() - oldDate.getTime();
+  });
 
   return (
     <div className="w-full flex flex-col items-center px-4">
@@ -18,8 +24,8 @@ export function Home() {
         Minhas Anotações
       </h1>
       <section className="w-full mt-5 flex flex-wrap justify-center items-center gap-4 md:px-4 py-4 md:py-0">
-        {annotationCount > 0 ? (
-          data?.map((item) => (
+        {dataLength > 0 && data ? (
+          sortedData.map((item) => (
             <Card
               key={item.id}
               annotationTitle={item.title}

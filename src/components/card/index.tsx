@@ -18,6 +18,12 @@ export function Card({ created, inHours, annotationTitle, id }: CardProps) {
   const [annotationId, setAnnotationId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
+  const currentDate = new Date();
+  const formattedDate =
+    currentDate.getDay() === new Date(created).getDay()
+      ? "Hoje"
+      : format(new Date(created), "EEEE", { locale: ptBR });
+
   const { deleteAnnotation } = useAnnotation();
   const navigate = useNavigate();
 
@@ -58,9 +64,7 @@ export function Card({ created, inHours, annotationTitle, id }: CardProps) {
         </div>
       )}
       <section className="flex flex-col px-6 py-6 gap-2">
-        <p className="text-white text-lg font-medium">
-          {format(new Date(created), "EEEE", { locale: ptBR })}
-        </p>
+        <p className="text-white text-lg font-medium">{formattedDate}</p>
         <h1 className="text-2xl font-bold bg-gradient-to-r from-[#4f46e5] to-[#c026d3] bg-clip-text text-transparent">
           {format(new Date(inHours), "p", { locale: ptBR })}h
         </h1>
