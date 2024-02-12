@@ -50,7 +50,8 @@ export function Login() {
         navigate("/");
       })
       .catch((error) => {
-        toast.error(error.message, {
+        console.log(error);
+        toast.error("E-mail ou Senhas incorretas", {
           position: "top-center",
           style: {
             background: "#232323",
